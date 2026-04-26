@@ -223,31 +223,39 @@ Per-experiment artefacts: `recipe.yaml`, `metrics.json`,
 
 ## 4. Results
 
-*This section is populated as the campaign runs. The current snapshot is
-always at https://dlmastery.github.io/autoresearchtabular/ (live
-dashboard).*
+_Live snapshot — last updated 2026-04-26T08:04:18Z._
 
-### 4.1 Tier 1 results (target: 0.860 + composite)
+- **Total experiments completed:** 40
+- **Backbones with results:** 2 (`lightgbm, logistic_regression`)
+- **Global champion:** experiment #30 on `lightgbm` — composite **0.8370** (val_auc 0.8373, test_auc 0.8371, val/test gap 0.0002)
+- **Data-split fingerprint (Baldi 2014, subset_train_n=1M):** `3c5edcc34086b3dba8406b7e…`
+- **Composite formula fingerprint:** SHA-256 of `min(test_auc, val_auc) - 0.1 * abs(test_auc - val_auc)`
 
-*Pending.*
+### 4.1 Per-backbone leaderboard
 
-### 4.2 Tier 2 results (target: 0.875 + composite)
+| backbone | n_exps | best composite | best test_auc | best val_auc | within-backbone gap (max−min composite) |
+|---|---:|---:|---:|---:|---:|
+| `lightgbm` | 15 | **0.8370** | 0.8371 | 0.8373 | 0.0115 |
+| `logistic_regression` | 25 | **0.6846** | 0.6846 | 0.6849 | 0.0001 |
 
-*Pending.*
+### 4.2 Global top 10 by composite
 
-### 4.3 Tier 3 results (target: 0.880 + composite)
+| rank | exp | backbone | composite | val_auc | test_auc | val/test gap | description |
+|---|---:|---|---:|---:|---:|---:|---|
+| 1 | 30 | `lightgbm` | **0.8370** | 0.8373 | 0.8371 | 0.0002 | exp30 [lightgbm#5] leaves 511 |
+| 2 | 31 | `lightgbm` | **0.8359** | 0.8361 | 0.8359 | 0.0002 | exp31 [lightgbm#6] lr 0.01 + 5x iters |
+| 3 | 29 | `lightgbm` | **0.8358** | 0.8360 | 0.8358 | 0.0002 | exp29 [lightgbm#4] leaves 255 |
+| 4 | 33 | `lightgbm` | **0.8353** | 0.8355 | 0.8353 | 0.0002 | exp33 [lightgbm#8] lr 0.02 + 3000 iters |
+| 5 | 28 | `lightgbm` | **0.8336** | 0.8341 | 0.8337 | 0.0004 | exp28 [lightgbm#3] leaves 127 |
+| 6 | 37 | `lightgbm` | **0.8306** | 0.8309 | 0.8306 | 0.0003 | exp37 [lightgbm#12] feature_fraction 1.0 |
+| 7 | 38 | `lightgbm` | **0.8301** | 0.8304 | 0.8302 | 0.0003 | exp38 [lightgbm#13] bagging_fraction 0.5 |
+| 8 | 1 | `lightgbm` | **0.8301** | 0.8305 | 0.8302 | 0.0004 | exp1 [lightgbm#1] default 1000 leaves 63 lr 0.05 |
+| 9 | 32 | `lightgbm` | **0.8301** | 0.8305 | 0.8302 | 0.0004 | exp32 [lightgbm#7] lr 0.1 fast |
+| 10 | 34 | `lightgbm` | **0.8301** | 0.8305 | 0.8302 | 0.0004 | exp34 [lightgbm#9] min_data_in_leaf 100 |
 
-*Pending.*
+### 4.3 Notes
 
-### 4.4 Best per-backbone
-
-*Pending.*
-
-### 4.5 Cross-backbone champion
-
-*Pending.*
-
----
+All test-AUROC values are computed on the Baldi 2014 frozen test split (rows `[10,500,000, 11,000,000)`); val on rows `[10,000,000, 10,500,000)`; train on the first 1,000,000 rows of `[0, 10,000,000)`. Every experiment row carries the data-split fingerprint and the composite-formula fingerprint recorded in `autoresearch_results/data_split_audit.json` and `autoresearch_results/.composite_fingerprint.json`.
 
 ## 5. Discussion
 

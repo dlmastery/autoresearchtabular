@@ -44,22 +44,35 @@ engineered features) unless noted.
 
 ## Where we expect to land
 
-*(populated when campaign completes)*
+_Live snapshot — last updated 2026-04-26T08:04:18Z._
 
-The campaign budget is 25 experiments per backbone. With paper-grounded
-HP changes, the realistic targets are:
+- **Total experiments completed:** 40
+- **Backbones with results:** 2 (`lightgbm, logistic_regression`)
+- **Global champion:** experiment #30 on `lightgbm` — composite **0.8370** (val_auc 0.8373, test_auc 0.8371, val/test gap 0.0002)
+- **Data-split fingerprint (Baldi 2014, subset_train_n=1M):** `3c5edcc34086b3dba8406b7e…`
+- **Composite formula fingerprint:** SHA-256 of `min(test_auc, val_auc) - 0.1 * abs(test_auc - val_auc)`
 
-| Tier | Backbones | Composite target | Test AUROC target |
-|------|-----------|-----------------:|------------------:|
-| 1    | LR, RF    | 0.65 - 0.80      | 0.65 - 0.80       |
-| 1    | LightGBM, XGBoost, CatBoost | 0.85 - 0.87      | 0.85 - 0.87       |
-| 2    | MLP, MLP-PLR, FT-Transformer, SAINT, NODE, TabNet | 0.86 - 0.88 | 0.86 - 0.88 |
-| 3    | TabM, TabPFN-v2, Trompt, ExcelFormer | 0.87 - 0.89 | 0.87 - 0.89 |
+### Per-backbone leaderboard
 
-Goal: a per-backbone champion within 0.005 AUROC of the published
-result for that architecture. We are *not* trying to set new SOTA on
-Higgs; we are trying to demonstrate that the audit-gated discipline
-reproduces published numbers within a defensible margin.
+| backbone | n_exps | best composite | best test_auc | best val_auc | within-backbone gap (max−min composite) |
+|---|---:|---:|---:|---:|---:|
+| `lightgbm` | 15 | **0.8370** | 0.8371 | 0.8373 | 0.0115 |
+| `logistic_regression` | 25 | **0.6846** | 0.6846 | 0.6849 | 0.0001 |
+
+### Global top 10
+
+| rank | exp | backbone | composite | val_auc | test_auc | val/test gap | description |
+|---|---:|---|---:|---:|---:|---:|---|
+| 1 | 30 | `lightgbm` | **0.8370** | 0.8373 | 0.8371 | 0.0002 | exp30 [lightgbm#5] leaves 511 |
+| 2 | 31 | `lightgbm` | **0.8359** | 0.8361 | 0.8359 | 0.0002 | exp31 [lightgbm#6] lr 0.01 + 5x iters |
+| 3 | 29 | `lightgbm` | **0.8358** | 0.8360 | 0.8358 | 0.0002 | exp29 [lightgbm#4] leaves 255 |
+| 4 | 33 | `lightgbm` | **0.8353** | 0.8355 | 0.8353 | 0.0002 | exp33 [lightgbm#8] lr 0.02 + 3000 iters |
+| 5 | 28 | `lightgbm` | **0.8336** | 0.8341 | 0.8337 | 0.0004 | exp28 [lightgbm#3] leaves 127 |
+| 6 | 37 | `lightgbm` | **0.8306** | 0.8309 | 0.8306 | 0.0003 | exp37 [lightgbm#12] feature_fraction 1.0 |
+| 7 | 38 | `lightgbm` | **0.8301** | 0.8304 | 0.8302 | 0.0003 | exp38 [lightgbm#13] bagging_fraction 0.5 |
+| 8 | 1 | `lightgbm` | **0.8301** | 0.8305 | 0.8302 | 0.0004 | exp1 [lightgbm#1] default 1000 leaves 63 lr 0.05 |
+| 9 | 32 | `lightgbm` | **0.8301** | 0.8305 | 0.8302 | 0.0004 | exp32 [lightgbm#7] lr 0.1 fast |
+| 10 | 34 | `lightgbm` | **0.8301** | 0.8305 | 0.8302 | 0.0004 | exp34 [lightgbm#9] min_data_in_leaf 100 |
 
 ## How we avoid cheating to beat
 

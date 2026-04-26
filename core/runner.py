@@ -148,7 +148,10 @@ def main() -> int:
     sota_path = os.path.join(os.path.dirname(args.config) or ".", "..", "sota_catalog.yaml")
     sota = _load_sota(sota_path)
     overrides = {
-        "epochs": args.epochs, "patience": args.patience, "lr": args.lr,
+        "epochs": args.epochs, "patience": args.patience,
+        # Pass lr under both names so MLP (lr) and GBMs (learning_rate)
+        # both pick it up.
+        "lr": args.lr, "learning_rate": args.lr,
         "weight_decay": args.weight_decay, "batch_size": args.batch_size,
         "n_estimators": args.n_estimators, "num_leaves": args.num_leaves,
         "max_depth": args.max_depth, "reg_alpha": args.reg_alpha,
@@ -156,6 +159,7 @@ def main() -> int:
         "bagging_fraction": args.bagging_fraction, "subsample": args.subsample,
         "colsample_bytree": args.colsample_bytree, "l2_leaf_reg": args.l2_leaf_reg,
         "depth": args.depth, "iterations": args.iterations,
+        "seed": args.seed,
     }
     recipe = _resolve_recipe(args.backbone, sota, {})
     if not recipe:
