@@ -28,6 +28,12 @@ autoresearch_results/best_model.joblib
 autoresearch_results/winners/*/model_checkpoint.pt
 autoresearch_results/winners/*/model_checkpoint.joblib
 
+# Per-experiment predictions (~70 MB each on Higgs UCI 2M predictions/exp)
+# kept on disk for local audit replay; not committed.
+# JSON prediction summaries ARE committed.
+autoresearch_results/trade_logs/*_predictions.csv
+autoresearch_results/trade_logs/*_predictions.csv.gz
+
 # CatBoost noise
 catboost_info/
 

@@ -1,0 +1,4 @@
+{
+  "fingerprint": "dc2d2526d9bf12e1",
+  "formula": "min(test_auc, val_auc) - 0.1 * abs(test_auc - val_auc)"
+}

@@ -38,7 +38,7 @@ training:
   amp_enable: true
   num_threads: 4        # GBM threads
   standardize_features: true   # for neural backbones
-  subset_train_n: null  # if set, train on subset (for fast iteration); val/test always full
+  subset_train_n: 1000000  # 1M train rows for HP-sweep speed; val/test always full 500k each
 
 augmentation:
   train:
