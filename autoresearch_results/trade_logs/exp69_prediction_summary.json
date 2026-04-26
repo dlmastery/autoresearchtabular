@@ -1,29 +1,5 @@
 {
-  "experiment_num": 69,
-  "timestamp": "2026-04-26T12:05:57Z",
-  "backbone": "xgboost",
-  "description": "exp69 [xgboost#19] depth 10 lr 0.01 iters 5000",
-  "seed": 0,
-  "subset_train_n": 1000000,
-  "standardize": false,
-  "params": {
-    "n_estimators": 5000,
-    "max_depth": 10,
-    "learning_rate": 0.01,
-    "subsample": 0.8,
-    "colsample_bytree": 0.8,
-    "min_child_weight": 1,
-    "reg_alpha": 0.0,
-    "reg_lambda": 1.0,
-    "gamma": 0.0,
-    "n_jobs": 4,
-    "objective": "binary:logistic",
-    "eval_metric": "auc",
-    "tree_method": "hist",
-    "early_stopping_rounds": 50,
-    "lr": 0.01
-  },
-  "metrics": {
+  "per_split": {
     "train": {
       "n": 1000000,
       "auc": 0.9531116475742674,
@@ -91,15 +67,5 @@
       "cm_fn": 58612
     }
   },
-  "train_auc": 0.9531116475742674,
-  "val_auc": 0.8403489314874515,
-  "test_auc": 0.8402861866160951,
-  "composite": 0.8402799121289595,
-  "composite_formula": "min(test_auc, val_auc) - 0.1 * abs(test_auc - val_auc)",
-  "composite_fingerprint": "dc2d2526d9bf12e1",
-  "train_time_s": 1520.916360616684,
-  "info": {
-    "best_iteration": 4995
-  },
-  "status": "KEEP/CHAMPION"
+  "composite": 0.8402799121289595
 }

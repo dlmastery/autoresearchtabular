@@ -38,7 +38,7 @@ training:
   amp_enable: true
   num_threads: 4        # GBM threads
   standardize_features: true   # for neural backbones
-  subset_train_n: 1000000  # 1M train rows for HP-sweep speed; val/test always full 500k each
+  subset_train_n: null  # FULL 10M train rows (per CLAUDE.md SOTA-FIRST directive); val/test always full 500k each
 
 augmentation:
   train:

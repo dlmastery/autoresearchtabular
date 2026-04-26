@@ -1,18 +1,18 @@
 # AUTORESEARCHTABULAR — Data Split Audit Report
 
-_Generated: 2026-04-26T06:40:26Z_
+_Generated: 2026-04-26T14:50:28Z_
 
 - **Overall:** **PASS**
 - **Data mode:** higgs (Baldi 2014 frozen split)
-- **subset_train_n:** 1000000
+- **subset_train_n:** None
 - **Audit version:** 1.0.0
-- **Split fingerprint:** `3c5edcc34086b3dba8406b7e5f4ede15e3549c1d6f5c190f24b8e34e780a0117`
+- **Split fingerprint:** `eee12999eeae3950c0c27295dd117286ff8a24999ba466a2d8b6fd8a0dda115c`
 
 ## Fold sizes
 
 | fold | size |
 |---|---|
-| train | 1,000,000 |
+| train | 10,000,000 |
 | val | 500,000 |
 | test | 500,000 |
 
@@ -41,7 +41,7 @@ _Generated: 2026-04-26T06:40:26Z_
 
 ```json
 {
-  "train_n": 1000000,
+  "train_n": 10000000,
   "train_expected": 10000000,
   "val_n": 500000,
   "val_expected": 500000,
@@ -62,7 +62,7 @@ _Generated: 2026-04-26T06:40:26Z_
     0,
     1
   ],
-  "train_pos_prevalence": 0.5297,
+  "train_pos_prevalence": 0.53,
   "val_classes": [
     0,
     1
@@ -84,7 +84,7 @@ _Generated: 2026-04-26T06:40:26Z_
 
 ```json
 {
-  "train": 1000000,
+  "train": 10000000,
   "val": 500000,
   "test": 500000
 }
@@ -99,7 +99,7 @@ _Generated: 2026-04-26T06:40:26Z_
 ```json
 {
   "train_shape": [
-    1000000,
+    10000000,
     28
   ],
   "train_dtype": "float32",
@@ -142,17 +142,17 @@ _Generated: 2026-04-26T06:40:26Z_
 ```json
 {
   "fingerprints": [
-    "3c5edcc34086b3dba8406b7e5f4ede15e3549c1d6f5c190f24b8e34e780a0117",
-    "3c5edcc34086b3dba8406b7e5f4ede15e3549c1d6f5c190f24b8e34e780a0117"
+    "eee12999eeae3950c0c27295dd117286ff8a24999ba466a2d8b6fd8a0dda115c",
+    "eee12999eeae3950c0c27295dd117286ff8a24999ba466a2d8b6fd8a0dda115c"
   ],
   "sizes": [
     {
-      "train": 1000000,
+      "train": 10000000,
       "val": 500000,
       "test": 500000
     },
     {
-      "train": 1000000,
+      "train": 10000000,
       "val": 500000,
       "test": 500000
     }

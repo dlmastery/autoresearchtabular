@@ -576,3 +576,187 @@
 - **val_auc:** 0.8370
 - **train_auc:** 0.8971
 - **Status:** KEEP
+
+## Exp69: exp69 [xgboost#19] depth 10 lr 0.01 iters 5000
+- **Backbone:** `xgboost`
+- **Composite:** 0.8403
+- **test_auc:** 0.8403
+- **val_auc:** 0.8403
+- **train_auc:** 0.9531
+- **Status:** KEEP/CHAMPION
+
+## Exp70: exp70 [xgboost#20] depth 6 sub 0.7 col 0.7 lr 0.02
+- **Backbone:** `xgboost`
+- **Composite:** 0.8302
+- **test_auc:** 0.8302
+- **val_auc:** 0.8304
+- **train_auc:** 0.8491
+- **Status:** KEEP
+
+## Exp71: exp71 [xgboost#21] depth 8 lambda 5 alpha 0.1
+- **Backbone:** `xgboost`
+- **Composite:** 0.8354
+- **test_auc:** 0.8354
+- **val_auc:** 0.8356
+- **train_auc:** 0.8827
+- **Status:** KEEP
+
+## Exp72: exp72 [xgboost#22] tree_method approx
+- **Backbone:** `xgboost`
+- **Composite:** 0.8286
+- **test_auc:** 0.8286
+- **val_auc:** 0.8288
+- **train_auc:** 0.8449
+- **Status:** KEEP
+
+## Exp73: exp73 [xgboost#23] seed 42 best-zone
+- **Backbone:** `xgboost`
+- **Composite:** 0.8368
+- **test_auc:** 0.8369
+- **val_auc:** 0.8370
+- **train_auc:** 0.8971
+- **Status:** KEEP
+
+## Exp74: exp74 [xgboost#24] seed 7 best-zone
+- **Backbone:** `xgboost`
+- **Composite:** 0.8368
+- **test_auc:** 0.8369
+- **val_auc:** 0.8370
+- **train_auc:** 0.8971
+- **Status:** KEEP
+
+## Exp75: exp75 [xgboost#25] seed 123 best-zone
+- **Backbone:** `xgboost`
+- **Composite:** 0.8368
+- **test_auc:** 0.8369
+- **val_auc:** 0.8370
+- **train_auc:** 0.8971
+- **Status:** KEEP
+
+## Exp76: exp76 [catboost#1] default depth 6 lr 0.05 iters 1000
+- **Backbone:** `catboost`
+- **Composite:** 0.8223
+- **test_auc:** 0.8223
+- **val_auc:** 0.8227
+- **train_auc:** 0.8249
+- **Status:** KEEP
+
+## Exp77: exp77 [catboost#2] depth 4
+- **Backbone:** `catboost`
+- **Composite:** 0.8105
+- **test_auc:** 0.8105
+- **val_auc:** 0.8111
+- **train_auc:** 0.8114
+- **Status:** KEEP
+
+## Exp78: exp78 [catboost#3] depth 8
+- **Backbone:** `catboost`
+- **Composite:** 0.8303
+- **test_auc:** 0.8303
+- **val_auc:** 0.8306
+- **train_auc:** 0.8386
+- **Status:** KEEP
+
+## Exp79: exp79 [catboost#4] depth 10
+- **Backbone:** `catboost`
+- **Composite:** 0.8355
+- **test_auc:** 0.8355
+- **val_auc:** 0.8357
+- **train_auc:** 0.8610
+- **Status:** KEEP
+
+## Exp80: exp80 [catboost#5] lr 0.01 iters 5000
+- **Backbone:** `catboost`
+- **Composite:** 0.8223
+- **test_auc:** 0.8224
+- **val_auc:** 0.8227
+- **train_auc:** 0.8250
+- **Status:** KEEP
+
+## Exp81: exp81 [catboost#6] lr 0.1 iters 1000
+- **Backbone:** `catboost`
+- **Composite:** 0.8292
+- **test_auc:** 0.8292
+- **val_auc:** 0.8294
+- **train_auc:** 0.8353
+- **Status:** KEEP
+
+## Exp82: exp82 [catboost#7] lr 0.02 iters 3000
+- **Backbone:** `catboost`
+- **Composite:** 0.8244
+- **test_auc:** 0.8244
+- **val_auc:** 0.8248
+- **train_auc:** 0.8277
+- **Status:** KEEP
+
+## Exp83: exp83 [catboost#8] l2_leaf_reg 1
+- **Backbone:** `catboost`
+- **Composite:** 0.8222
+- **test_auc:** 0.8222
+- **val_auc:** 0.8227
+- **train_auc:** 0.8248
+- **Status:** KEEP
+
+## Exp84: exp84 [catboost#9] l2_leaf_reg 10
+- **Backbone:** `catboost`
+- **Composite:** 0.8223
+- **test_auc:** 0.8223
+- **val_auc:** 0.8226
+- **train_auc:** 0.8248
+- **Status:** KEEP
+
+## Exp85: exp85 [catboost#10] l2_leaf_reg 30
+- **Backbone:** `catboost`
+- **Composite:** 0.8221
+- **test_auc:** 0.8222
+- **val_auc:** 0.8226
+- **train_auc:** 0.8247
+- **Status:** KEEP
+
+## Exp86: exp86 [catboost#11] bagging_temp 0
+- **Backbone:** `catboost`
+- **Composite:** 0.8223
+- **test_auc:** 0.8223
+- **val_auc:** 0.8227
+- **train_auc:** 0.8249
+- **Status:** KEEP
+
+## Exp87: exp87 [catboost#12] bagging_temp 5
+- **Backbone:** `catboost`
+- **Composite:** 0.8223
+- **test_auc:** 0.8223
+- **val_auc:** 0.8227
+- **train_auc:** 0.8249
+- **Status:** KEEP
+
+## Exp88: exp88 [catboost#13] random_strength 0
+- **Backbone:** `catboost`
+- **Composite:** 0.8223
+- **test_auc:** 0.8223
+- **val_auc:** 0.8227
+- **train_auc:** 0.8249
+- **Status:** KEEP
+
+## Exp89: exp89 [catboost#14] random_strength 5
+- **Backbone:** `catboost`
+- **Composite:** 0.8223
+- **test_auc:** 0.8223
+- **val_auc:** 0.8227
+- **train_auc:** 0.8249
+- **Status:** KEEP
+
+## Exp90: exp90 [catboost#15] border_count 64
+- **Backbone:** `catboost`
+- **Composite:** 0.8223
+- **test_auc:** 0.8223
+- **val_auc:** 0.8227
+- **train_auc:** 0.8249
+- **Status:** KEEP
+
+## Exp91: exp91 [catboost#16] border_count 254
+- **Backbone:** `catboost`
+- **Composite:** 0.8223
+- **test_auc:** 0.8223
+- **val_auc:** 0.8227
+- **train_auc:** 0.8249
+- **Status:** KEEP

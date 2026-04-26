@@ -1,5 +1,5 @@
 {
-  "fingerprint": "3c5edcc34086b3dba8406b7e5f4ede15e3549c1d6f5c190f24b8e34e780a0117",
+  "fingerprint": "eee12999eeae3950c0c27295dd117286ff8a24999ba466a2d8b6fd8a0dda115c",
   "data_mode": "higgs",
-  "subset_train_n": 1000000
+  "subset_train_n": null
 }

@@ -7,8 +7,92 @@
 > features, signal-vs-background binary classification, primary metric
 > AUC. Industrial relevance: this is the canonical tabular benchmark for
 > ATLAS/CMS-style trigger ML at CERN, and the standard tracking benchmark
-> in modern tabular ML papers (TabM 2024, TabPFN-v2 2025, FT-Transformer
-> 2021, SAINT 2021, NODE 2020).
+> in modern tabular ML papers (TabM 2024-2025, TabPFN-2.5 2025,
+> FT-Transformer 2021, ExcelFormer 2024, MLP-PLR 2022).
+
+---
+
+## TOP-PRIORITY DIRECTIVE — SOTA-FIRST + VERBATIM REPRODUCIBILITY (added 2026-04-26)
+
+**The campaign MUST prioritise April-2026 state-of-the-art tabular ML
+backbones over legacy GBM / LR / RF baselines.** Legacy baselines stay in
+the catalog as floors for cross-tier comparison only. The audit-gated
+research budget belongs to SOTA models.
+
+### SOTA priority list (April 2026)
+
+In strict priority order, the campaign exhausts these before any "extra"
+legacy run is started:
+
+1. **TabM** (Gorishniy, Kotelnikov, Babenko 2025 ICLR
+   arXiv:2410.24210) — parameter-efficient MLP ensembling with PLR
+   embeddings; reports test AUROC ~0.886 on Higgs UCI; current
+   leader on TabArena and TALENT among non-foundation models.
+   Library: `pip install tabm` (yandex-research/tabm).
+
+2. **FT-Transformer** (Gorishniy, Rubachev, Khrulkov, Babenko 2021
+   NeurIPS arXiv:2106.11189) — Feature Tokenizer + Transformer; reports
+   test AUROC 0.880 on Higgs UCI Tab.6.
+   Library: `pip install rtdl-revisiting-models`.
+
+3. **MLP-PLR** (Gorishniy, Rubachev, Babenko 2022 ICLR
+   arXiv:2203.05556) — MLP with periodic-linear-ReLU numerical
+   embeddings; reports test AUROC 0.879 on Higgs Tab.4.
+   Library: `pip install rtdl-num-embeddings` + `rtdl-revisiting-models`.
+
+4. **ExcelFormer** (Chen et al. 2024 KDD arXiv:2301.02819) —
+   semi-permeable attention + tailored mixup/cutmix; first neural
+   tabular method claimed to beat GBDTs across the board.
+
+5. **TabPFN-v2 / TabPFN-2.5** (Hollmann, Müller, Eggensperger, Hutter
+   2025 Nature; arXiv:2511.08667 for v2.5) — tabular foundation model;
+   100% win rate vs default XGBoost on small/medium datasets in
+   TabArena. On Higgs we use it as an in-context probe on a 50k
+   subsample (TabPFN-2.5 limit).
+   Library: `pip install tabpfn`.
+
+6. **TabICL v2** (2026, openreview) — column-then-row attention,
+   scales to 500k samples, ~10× faster than TabPFN-v2 on large
+   datasets; surpasses TabPFNv2 and CatBoost on the 53 TALENT
+   datasets > 10k samples.
+
+7. **TabReD-class real-world** baselines if time permits.
+
+### Verbatim reproducibility rules
+
+For every SOTA backbone, the recipe MUST reproduce the published
+configuration exactly before any HP variation is tried:
+
+1. **Recipe #1 = the paper's exact configuration on Higgs.** Copy
+   epochs, batch size, lr, weight decay, optimizer, embedding dims,
+   layer counts, dropout from the published Higgs experiment row in
+   the paper. Cite the table/figure reference in the recipe label.
+2. **Use the official library implementation** wherever it exists —
+   `tabm.TabM.make()`, `rtdl_revisiting_models.FTTransformer`, etc.
+   Do not reimplement from scratch.
+3. **Do not invent hyperparameters.** Every variation in recipes
+   2–25 cites a paper section that justifies the change.
+4. **Dataset preprocessing matches the paper.** PLR / TabM / FT-T
+   require standardised numerical features (train-set mean/std,
+   applied to val/test). Standardisation must match the paper.
+5. **Train on the FULL 10M Baldi 2014 train split** for SOTA
+   backbones. The 1M `subset_train_n` is for HP-sweep speed only;
+   the per-backbone recipe winner is rerun on full 10M before the
+   final leaderboard row.
+6. **GPU training, BF16 autocast, batch 4096–8192** unless the
+   paper specifies otherwise. Use `torch.set_float32_matmul_precision('high')`.
+7. **Determinism block fingerprinted.** seed, cuDNN deterministic,
+   PyTorch + numpy + python `random`. Re-running an experiment
+   with the same seed must reproduce metrics within 1e-4 AUC.
+
+### Compute budget rule (revised)
+
+When the SOTA priority list is incomplete, **stop running new
+legacy GBM/LR/RF experiments and reallocate compute to the next
+unfinished SOTA backbone**. Legacy "seed-variance" recipes 23-25 are
+the lowest-priority work in the campaign.
+
+---
 >
 > **Inheritance.** This CLAUDE.md is a filled-in instance of
 > `C:/Users/evija/autoresearch/generalized_ml_autoresearch/templates/CLAUDE_template.md`,

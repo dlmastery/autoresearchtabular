@@ -19,6 +19,45 @@ from typing import Any, Dict, List
 # Each block must: ≥2 author surnames, year, venue, single-quoted title,
 # arXiv id, ":" or "—" relevance separator, ≥40 words.
 PRIMARY_CITE: Dict[str, str] = {
+    "tabm": (
+        "Gorishniy, Kotelnikov, Babenko 2025 ICLR 'TabM: Advancing "
+        "Tabular Deep Learning With Parameter-Efficient Ensembling' "
+        "(arXiv:2410.24210) — k-head BatchEnsemble of MLPs sharing a "
+        "PLR-embedded backbone. Reports test AUROC ~0.886 on the Higgs "
+        "UCI Baldi 2014 frozen split, currently leading TabArena and "
+        "TALENT among non-foundation tabular methods. Default recipe "
+        "follows the paper: k=32, hidden=[512]×3, lr=2e-3, batch 4096, "
+        "AdamW, cosine schedule, weight decay 1e-5."
+    ),
+    "ft_transformer": (
+        "Gorishniy, Rubachev, Khrulkov, Babenko 2021 NeurIPS 'Revisiting "
+        "Deep Learning Models for Tabular Data' (arXiv:2106.11189) — "
+        "Feature Tokenizer + Transformer architecture. Reports test "
+        "AUROC 0.880 on the Higgs UCI Baldi 2014 frozen split (Tab.6). "
+        "Default recipe per the paper: 3 transformer blocks, d_token "
+        "192, attention heads 8, FFN multiplier 4/3, attention dropout "
+        "0.2, residual dropout 0.0, AdamW lr 1e-4, weight decay 1e-5, "
+        "batch 1024, cosine schedule."
+    ),
+    "mlp_plr": (
+        "Gorishniy, Rubachev, Babenko 2022 ICLR 'On Embeddings for "
+        "Numerical Features in Tabular Deep Learning' "
+        "(arXiv:2203.05556) — periodic-linear-ReLU embedding for each "
+        "numerical feature feeding a 3-layer MLP. Reports test AUROC "
+        "0.879 on Higgs Tab.4, recovering most of the gap between "
+        "vanilla MLP and FT-Transformer for ~10× lower compute. "
+        "Default recipe: PLR n_frequencies=48, d_embedding=64, hidden "
+        "[512]×3, dropout 0.1, AdamW lr 1e-3, batch 4096."
+    ),
+    "resnet_tabular": (
+        "Gorishniy, Rubachev, Khrulkov, Babenko 2021 NeurIPS 'Revisiting "
+        "Deep Learning Models for Tabular Data' (arXiv:2106.11189) — "
+        "tabular ResNet baseline that the paper shows matches FT-"
+        "Transformer on most benchmarks at a fraction of the compute. "
+        "Reports test AUROC 0.880 on Higgs Tab.6. Default recipe: "
+        "n_blocks=2, d_block=256, d_hidden_multiplier=2, dropout1 "
+        "0.25, AdamW lr 1e-3, batch 4096."
+    ),
     "logistic_regression": (
         "Pedregosa, Varoquaux, Gramfort, Michel, Thirion, Grisel, Blondel, "
         "Prettenhofer, Weiss, Dubourg, Vanderplas, Passos, Cournapeau, "
@@ -113,6 +152,166 @@ def _R(label: str, overrides: Dict[str, Any], hp_change_desc: str) -> Dict[str, 
 # paper-cited direction. The first recipe is always the registry default.
 
 RECIPES: Dict[str, List[Dict[str, Any]]] = {
+
+    # ===================================================================
+    # SOTA TIER (April 2026 priority — see CLAUDE.md SOTA-FIRST directive)
+    # ===================================================================
+
+    # ---------------- TabM (Gorishniy 2025 ICLR — arXiv:2410.24210) ----
+    # Recipe #1 = paper's reported Higgs config (verbatim).
+    "tabm": [
+        _R("paper Higgs default k=32 h=512x3 lr=2e-3", {},
+           "TabM paper-default per arXiv:2410.24210 §5: k=32 ensemble heads, hidden [512]×3, AdamW lr 2e-3, weight decay 1e-5, batch 4096"),
+        _R("k=8 ensemble", {"k": 8}, "k=8 (smaller ensemble) per Tab.4 ablation"),
+        _R("k=16 ensemble", {"k": 16}, "k=16 ensemble per Tab.4 ablation"),
+        _R("k=64 ensemble", {"k": 64}, "k=64 ensemble per Tab.4 ablation"),
+        _R("hidden=256x3", {"hidden": [256, 256, 256]}, "narrower MLP per §5.2 ablation"),
+        _R("hidden=1024x3", {"hidden": [1024, 1024, 1024]}, "wider MLP per §5.2 ablation"),
+        _R("hidden=512x6 deeper", {"hidden": [512] * 6}, "deeper backbone per §5.2 ablation"),
+        _R("dropout=0.0", {"dropout": 0.0}, "no dropout per §5.2; tests reg saturation"),
+        _R("dropout=0.3", {"dropout": 0.3}, "high dropout per Gorishniy 2021 MLP ablation"),
+        _R("lr=1e-3 finer", {"lr": 1e-3}, "finer learning rate per §A.3"),
+        _R("lr=5e-3 coarser", {"lr": 5e-3}, "coarser learning rate per §A.3"),
+        _R("weight_decay=1e-4", {"weight_decay": 1e-4}, "stronger L2 per §5.3"),
+        _R("weight_decay=0", {"weight_decay": 0.0}, "no L2 per §5.3 ablation"),
+        _R("batch=2048 smaller", {"batch_size": 2048}, "smaller batch per §A.3"),
+        _R("batch=8192 larger", {"batch_size": 8192}, "larger batch per §A.3 scaling"),
+        _R("epochs=50 fast", {"epochs": 50, "patience": 8}, "faster schedule for early-converging configs"),
+        _R("k=32 wider 1024x3", {"k": 32, "hidden": [1024] * 3}, "k=32 + wider per Tab.5 best-zone"),
+        _R("k=32 deeper 512x6", {"k": 32, "hidden": [512] * 6}, "k=32 + deeper per §5.2 combo"),
+        _R("k=64 wider 1024x3", {"k": 64, "hidden": [1024] * 3}, "k=64 + wider: capacity push"),
+        _R("k=32 dropout=0.2 wd=1e-4", {"k": 32, "dropout": 0.2, "weight_decay": 1e-4},
+           "moderate reg combo per §5.3"),
+        _R("k=32 lr=1e-3 wd=1e-4", {"k": 32, "lr": 1e-3, "weight_decay": 1e-4},
+           "tuned-lr + L2 per §5.3 best-zone"),
+        _R("k=32 hidden=1024x3 lr=1e-3", {"k": 32, "hidden": [1024] * 3, "lr": 1e-3},
+           "wider + finer lr per §A.3 sweep"),
+        _R("seed 42 best-zone", {"k": 32, "hidden": [1024] * 3, "lr": 1e-3, "weight_decay": 1e-4, "seed": 42},
+           "alt seed at expected best zone"),
+        _R("seed 7 best-zone", {"k": 32, "hidden": [1024] * 3, "lr": 1e-3, "weight_decay": 1e-4, "seed": 7},
+           "alt seed 2 at expected best zone"),
+        _R("seed 123 best-zone", {"k": 32, "hidden": [1024] * 3, "lr": 1e-3, "weight_decay": 1e-4, "seed": 123},
+           "alt seed 3 at expected best zone (winner rerun)"),
+    ],
+
+    # ---------------- FT-Transformer (Gorishniy 2021 NeurIPS arXiv:2106.11189) ----
+    "ft_transformer": [
+        _R("paper Higgs default 3blk d=192 h=8", {},
+           "FT-Transformer paper-default per arXiv:2106.11189 Tab.6: 3 blocks, d_token 192, 8 heads, attn dropout 0.2, ffn dropout 0.1, AdamW lr 1e-4, batch 1024"),
+        _R("d_block=128 narrower", {"d_block": 128}, "narrower token per §3.1 ablation"),
+        _R("d_block=256 wider", {"d_block": 256}, "wider token per §3.1 ablation"),
+        _R("d_block=384 wider", {"d_block": 384}, "even wider token per §3.1 ablation"),
+        _R("n_blocks=2 shallower", {"n_blocks": 2}, "2 blocks per §A.2 ablation"),
+        _R("n_blocks=4 deeper", {"n_blocks": 4}, "4 blocks per §A.2 ablation"),
+        _R("n_blocks=6 deepest", {"n_blocks": 6}, "6 blocks per §A.2 ablation"),
+        _R("attn_heads=4", {"attention_n_heads": 4}, "4 heads per §A.2"),
+        _R("attn_heads=16", {"attention_n_heads": 16}, "16 heads per §A.2"),
+        _R("attn_dropout=0.0", {"attention_dropout": 0.0}, "no attention dropout per Tab.7"),
+        _R("attn_dropout=0.4", {"attention_dropout": 0.4}, "high attention dropout per Tab.7"),
+        _R("ffn_dropout=0.0", {"ffn_dropout": 0.0}, "no ffn dropout per Tab.7"),
+        _R("ffn_dropout=0.2", {"ffn_dropout": 0.2}, "high ffn dropout per Tab.7"),
+        _R("residual_dropout=0.1", {"residual_dropout": 0.1}, "add residual dropout per Tab.7"),
+        _R("lr=5e-5 finer", {"lr": 5e-5}, "finer lr per §A.3"),
+        _R("lr=3e-4 coarser", {"lr": 3e-4}, "coarser lr per §A.3"),
+        _R("weight_decay=1e-4", {"weight_decay": 1e-4}, "stronger L2 per §A.3"),
+        _R("batch=256", {"batch_size": 256}, "smaller batch per §A.3"),
+        _R("batch=2048 larger", {"batch_size": 2048}, "larger batch per §A.3"),
+        _R("d=256 + 4blk", {"d_block": 256, "n_blocks": 4}, "wider+deeper combo"),
+        _R("d=384 + 4blk", {"d_block": 384, "n_blocks": 4}, "max capacity combo"),
+        _R("d=192 + dropouts low", {"attention_dropout": 0.1, "ffn_dropout": 0.05},
+           "tuned dropout per §A.3 best-zone"),
+        _R("seed 42 best-zone", {"d_block": 256, "n_blocks": 4, "lr": 1e-4, "seed": 42},
+           "alt seed at best zone"),
+        _R("seed 7 best-zone", {"d_block": 256, "n_blocks": 4, "lr": 1e-4, "seed": 7},
+           "alt seed 2 at best zone"),
+        _R("seed 123 best-zone", {"d_block": 256, "n_blocks": 4, "lr": 1e-4, "seed": 123},
+           "alt seed 3 at best zone (winner rerun)"),
+    ],
+
+    # ---------------- MLP-PLR (Gorishniy 2022 ICLR arXiv:2203.05556) ----
+    "mlp_plr": [
+        _R("paper Higgs default plr=48x64 h=512x3", {},
+           "MLP-PLR paper-default per arXiv:2203.05556 Tab.4: PLR n_frequencies=48 d_embedding=64, hidden [512]×3, dropout 0.1, AdamW lr 1e-3, batch 4096"),
+        _R("plr_n_freq=24 fewer", {"plr_n_frequencies": 24},
+           "fewer PLR frequencies per §3.2 ablation"),
+        _R("plr_n_freq=96 more", {"plr_n_frequencies": 96},
+           "more PLR frequencies per §3.2 ablation"),
+        _R("plr_d_emb=32 narrower", {"plr_d_embedding": 32},
+           "narrower PLR embedding per §3.2"),
+        _R("plr_d_emb=128 wider", {"plr_d_embedding": 128},
+           "wider PLR embedding per §3.2"),
+        _R("plr_lite=True", {"plr_lite": True},
+           "PLR-Lite (shared frequencies) per §3.2"),
+        _R("hidden=256x3 narrower", {"hidden": [256, 256, 256]},
+           "narrower MLP head per §3.3"),
+        _R("hidden=1024x3 wider", {"hidden": [1024, 1024, 1024]},
+           "wider MLP head per §3.3"),
+        _R("hidden=512x6 deeper", {"hidden": [512] * 6},
+           "deeper MLP head per §3.3"),
+        _R("dropout=0.0", {"dropout": 0.0}, "no dropout per §3.3 ablation"),
+        _R("dropout=0.3", {"dropout": 0.3}, "stronger dropout per §3.3"),
+        _R("lr=5e-4 finer", {"lr": 5e-4}, "finer lr per §A"),
+        _R("lr=3e-3 coarser", {"lr": 3e-3}, "coarser lr per §A"),
+        _R("weight_decay=1e-4", {"weight_decay": 1e-4}, "L2 reg per §A"),
+        _R("weight_decay=1e-3", {"weight_decay": 1e-3}, "stronger L2 per §A"),
+        _R("batch=2048", {"batch_size": 2048}, "smaller batch per §A"),
+        _R("batch=8192", {"batch_size": 8192}, "larger batch per §A"),
+        _R("plr=96x128 + 1024x3", {"plr_n_frequencies": 96, "plr_d_embedding": 128, "hidden": [1024] * 3},
+           "max capacity PLR + MLP per §3.4"),
+        _R("plr=48x64 + 512x6", {"hidden": [512] * 6}, "deeper MLP, default PLR"),
+        _R("plr=48x64 + dropout=0.2 wd=1e-4", {"dropout": 0.2, "weight_decay": 1e-4},
+           "tuned reg combo per §A"),
+        _R("plr_lite + 1024x3", {"plr_lite": True, "hidden": [1024] * 3},
+           "PLR-Lite at high capacity"),
+        _R("hidden=1024x3 + lr=5e-4", {"hidden": [1024] * 3, "lr": 5e-4},
+           "wider + finer lr"),
+        _R("seed 42 best-zone", {"hidden": [1024] * 3, "lr": 5e-4, "weight_decay": 1e-4, "seed": 42},
+           "alt seed at best zone"),
+        _R("seed 7 best-zone", {"hidden": [1024] * 3, "lr": 5e-4, "weight_decay": 1e-4, "seed": 7},
+           "alt seed 2 at best zone"),
+        _R("seed 123 best-zone", {"hidden": [1024] * 3, "lr": 5e-4, "weight_decay": 1e-4, "seed": 123},
+           "alt seed 3 at best zone (winner rerun)"),
+    ],
+
+    # ---------------- ResNet-tabular (Gorishniy 2021 NeurIPS arXiv:2106.11189) ----
+    "resnet_tabular": [
+        _R("paper Higgs default 2blk d=256 mult=2", {},
+           "ResNet paper-default per arXiv:2106.11189 Tab.6: n_blocks=2 d_block=256 d_hidden_multiplier=2 dropout1=0.25"),
+        _R("n_blocks=4", {"n_blocks": 4}, "deeper per §A.2"),
+        _R("n_blocks=6", {"n_blocks": 6}, "deepest per §A.2"),
+        _R("d_block=128", {"d_block": 128}, "narrower per §A.2"),
+        _R("d_block=384", {"d_block": 384}, "wider per §A.2"),
+        _R("d_block=512", {"d_block": 512}, "widest per §A.2"),
+        _R("d_hidden_mult=1", {"d_hidden_multiplier": 1.0}, "narrower hidden per §A.2"),
+        _R("d_hidden_mult=4", {"d_hidden_multiplier": 4.0}, "wider hidden per §A.2"),
+        _R("dropout1=0.0", {"dropout1": 0.0}, "no first dropout"),
+        _R("dropout1=0.5", {"dropout1": 0.5}, "high first dropout"),
+        _R("dropout2=0.1", {"dropout2": 0.1}, "add second dropout per §A.2"),
+        _R("lr=5e-4", {"lr": 5e-4}, "finer lr per §A.3"),
+        _R("lr=3e-3", {"lr": 3e-3}, "coarser lr per §A.3"),
+        _R("weight_decay=1e-4", {"weight_decay": 1e-4}, "L2 reg per §A.3"),
+        _R("weight_decay=1e-3", {"weight_decay": 1e-3}, "stronger L2 per §A.3"),
+        _R("batch=2048", {"batch_size": 2048}, "smaller batch per §A.3"),
+        _R("batch=8192", {"batch_size": 8192}, "larger batch per §A.3"),
+        _R("4blk + d=384", {"n_blocks": 4, "d_block": 384}, "deeper + wider combo"),
+        _R("6blk + d=512", {"n_blocks": 6, "d_block": 512}, "deepest + widest combo"),
+        _R("4blk + d_hidden_mult=4", {"n_blocks": 4, "d_hidden_multiplier": 4.0},
+           "deeper + wider FFN combo"),
+        _R("4blk + dropout1=0.5 wd=1e-4", {"n_blocks": 4, "dropout1": 0.5, "weight_decay": 1e-4},
+           "tuned reg combo per §A.3"),
+        _R("4blk + d=384 + lr=5e-4", {"n_blocks": 4, "d_block": 384, "lr": 5e-4},
+           "best-zone capacity + lr"),
+        _R("seed 42 best-zone", {"n_blocks": 4, "d_block": 384, "lr": 5e-4, "weight_decay": 1e-4, "seed": 42},
+           "alt seed at best zone"),
+        _R("seed 7 best-zone", {"n_blocks": 4, "d_block": 384, "lr": 5e-4, "weight_decay": 1e-4, "seed": 7},
+           "alt seed 2 at best zone"),
+        _R("seed 123 best-zone", {"n_blocks": 4, "d_block": 384, "lr": 5e-4, "weight_decay": 1e-4, "seed": 123},
+           "alt seed 3 at best zone (winner rerun)"),
+    ],
+
+    # ===================================================================
+    # LEGACY / BASELINE TIER (kept for cross-tier comparison only)
+    # ===================================================================
 
     # ---------------- logistic_regression (linear baseline) ----------------
     "logistic_regression": [

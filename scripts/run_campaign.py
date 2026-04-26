@@ -37,14 +37,16 @@ PYTHON_EXE = os.environ.get(
     else sys.executable,
 )
 
-# Default backbone order
+# Default backbone order — SOTA-only per CLAUDE.md TOP-PRIORITY DIRECTIVE
+# (added 2026-04-26 — paper-priority over legacy GBM/LR/RF baselines).
+# Legacy GBM/LR/RF/MLP runs from the earlier 1M-subset_train_n campaign are
+# preserved in experiment_log.jsonl and excluded here to avoid mixing data
+# regimes (legacy: 1M; SOTA: full 10M).
 DEFAULT_ORDER = [
-    "logistic_regression",  # 25
-    "lightgbm",             # 25
-    "xgboost",              # 25
-    "catboost",             # 25
-    "random_forest",        # 25 (slow, can be cut with --skip-rf)
-    "mlp",                  # 25
+    "tabm",                 # April-2026 SOTA (Gorishniy 2025 ICLR, Higgs 0.886)
+    "ft_transformer",       # 2021 ref (Gorishniy 2021 NeurIPS, Higgs 0.880)
+    "mlp_plr",              # 2022 ref (Gorishniy 2022 ICLR, Higgs 0.879)
+    "resnet_tabular",       # 2021 ref (Gorishniy 2021 NeurIPS, Higgs 0.880)
 ]
 
 
