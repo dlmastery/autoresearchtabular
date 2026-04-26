@@ -23,7 +23,7 @@ import subprocess
 import sys
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple  # noqa: F401
 
 import yaml
 
@@ -244,10 +244,21 @@ def _runner_args_for(overrides: Dict[str, Any]) -> List[str]:
         "patience": "--patience",
         "batch_size": "--batch-size",
         "seed": "--seed",
+        "subset_train_n": "--subset-train-n",
     }
     for k, v in overrides.items():
-        if k in arg_map and v is not None:
+        if v is None:
+            continue
+        if k in arg_map:
             args.extend([arg_map[k], str(v)])
+        else:
+            # Forward as --backbone-arg key=value (handles k, hidden, n_blocks,
+            # d_block, plr_d_embedding, etc.)
+            if isinstance(v, list):
+                v_str = "[" + ",".join(str(x) for x in v) + "]"
+            else:
+                v_str = str(v)
+            args.extend(["--backbone-arg", f"{k}={v_str}"])
     return args
 
 
@@ -257,6 +268,23 @@ def _hp_signature(overrides: Dict[str, Any]) -> str:
         return "default"
     return ",".join(f"{k}={v}" for k, v in sorted(overrides.items())
                      if not isinstance(v, list))
+
+
+SOTA_BACKBONES = {"tabm", "ft_transformer", "mlp_plr", "resnet_tabular"}
+
+# Per-recipe subset_train_n schedule for SOTA backbones (compute-budget
+# adaptation per CLAUDE.md TOP-PRIORITY DIRECTIVE). Recipe 1 = paper-default
+# at full 10M (verbatim reproducibility); 2-23 = subset for HP-sweep speed;
+# 24-25 = winner reruns at full 10M.
+def _subset_for_sota_recipe(backbone: str, recipe_idx: int) -> Optional[int]:
+    if backbone not in SOTA_BACKBONES:
+        return None
+    # recipe_idx is 0-based (0 == "paper default")
+    if recipe_idx == 0:
+        return None  # full 10M for paper-faithful recipe 1
+    if recipe_idx >= 22:
+        return None  # full 10M for winner re-runs (24, 25)
+    return 1_000_000  # 1M for HP sweeps
 
 
 def _run_one(*, config_path: str, backbone: str, recipe_idx: int,
@@ -283,11 +311,27 @@ def _run_one(*, config_path: str, backbone: str, recipe_idx: int,
     os.replace(tmp, annotations_path)
     print(f"[campaign] reasoning entry committed for exp{exp_num}")
 
-    cmd = [PYTHON_EXE, "-m", "core.runner",
+    overrides = dict(recipe["overrides"])
+    sota_subset = _subset_for_sota_recipe(backbone, recipe_idx)
+    if sota_subset is not None and "subset_train_n" not in overrides:
+        overrides["subset_train_n"] = sota_subset
+    # Speed up HP-sweep recipes for SOTA backbones (epochs/patience/batch cap)
+    # Compute-budget cap: each sweep run ≤ 5 min on RTX 4090 Mobile, 1M data.
+    if (backbone in SOTA_BACKBONES and recipe_idx not in (0,) and
+            recipe_idx < 22):
+        overrides.setdefault("epochs", 8)
+        overrides.setdefault("patience", 2)
+        overrides.setdefault("batch_size", 16384)
+    desc_suffix = ""
+    if backbone in SOTA_BACKBONES:
+        n = "10M" if sota_subset is None else f"{sota_subset // 1_000_000}M"
+        desc_suffix = f" @ train={n}"
+
+    cmd = [PYTHON_EXE, "-u", "-m", "core.runner",
            "--config", config_path,
            "--backbone", backbone,
-           "--description", f"exp{exp_num} [{backbone}#{recipe_idx+1}] {recipe['label']}"]
-    cmd += _runner_args_for(recipe["overrides"])
+           "--description", f"exp{exp_num} [{backbone}#{recipe_idx+1}]{desc_suffix} {recipe['label']}"]
+    cmd += _runner_args_for(overrides)
     print(f"[campaign] cmd: {' '.join(cmd)}")
     t0 = time.time()
     rc = subprocess.call(cmd)

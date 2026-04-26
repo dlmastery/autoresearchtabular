@@ -760,3 +760,27 @@
 - **val_auc:** 0.8227
 - **train_auc:** 0.8249
 - **Status:** KEEP
+
+## Exp92: exp92 [tabm#1] paper Higgs default k=32 h=512x3 lr=2e-3
+- **Backbone:** `tabm`
+- **Composite:** 0.8675
+- **test_auc:** 0.8679
+- **val_auc:** 0.8676
+- **train_auc:** 0.8705
+- **Status:** KEEP/CHAMPION
+
+## Exp93: exp93 [tabm#2] @ train=1M k=8 ensemble
+- **Backbone:** `tabm`
+- **Composite:** 0.8355
+- **test_auc:** 0.8355
+- **val_auc:** 0.8356
+- **train_auc:** 0.8370
+- **Status:** KEEP
+
+## Exp94: exp94 [tabm#3] @ train=1M k=16 ensemble
+- **Backbone:** `tabm`
+- **Composite:** 0.8374
+- **test_auc:** 0.8374
+- **val_auc:** 0.8374
+- **train_auc:** 0.8405
+- **Status:** KEEP

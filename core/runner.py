@@ -11,7 +11,7 @@ import sys
 import time
 import random
 from dataclasses import asdict
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
 
 import numpy as np
 
@@ -123,7 +123,39 @@ def _cli() -> argparse.Namespace:
     p.add_argument("--bypass-reasoning-gate", action="store_true")
     p.add_argument("--subset-train-n", type=int, default=None,
                    help="train on first N rows (val/test always full 500k)")
+    p.add_argument("--backbone-arg", action="append", default=[],
+                   metavar="key=value",
+                   help="Generic backbone kwarg override; repeatable. "
+                        "Value is parsed as int/float/bool/list/str heuristically.")
     return p.parse_args()
+
+
+def _parse_backbone_arg(token: str) -> Tuple[str, Any]:
+    if "=" not in token:
+        raise ValueError(f"--backbone-arg must be key=value; got {token!r}")
+    k, v = token.split("=", 1)
+    k = k.strip()
+    v = v.strip()
+    # type-coerce
+    if v.lower() == "true":
+        return k, True
+    if v.lower() == "false":
+        return k, False
+    if v.lower() in ("none", "null"):
+        return k, None
+    if v.startswith("[") and v.endswith("]"):
+        # list literal: [1,2,3] or [128,128,128]
+        try:
+            import ast
+            return k, ast.literal_eval(v)
+        except Exception:
+            return k, v
+    try:
+        if "." in v or "e" in v.lower():
+            return k, float(v)
+        return k, int(v)
+    except ValueError:
+        return k, v
 
 
 def _per_pred_csv(path: str, pred_arrays: Dict[str, Dict[str, np.ndarray]]) -> None:
@@ -230,6 +262,10 @@ def main() -> int:
     for k, v in overrides.items():
         if v is not None:
             cfg_params[k] = v
+    # Apply --backbone-arg overrides (highest priority)
+    for tok in (args.backbone_arg or []):
+        bk, bv = _parse_backbone_arg(tok)
+        cfg_params[bk] = bv
     # Pull arch-level keys for neural backbones
     arch = recipe.get("arch", {}) if isinstance(recipe.get("arch"), dict) else {}
     cfg_params.update({k: v for k, v in arch.items() if k not in cfg_params})

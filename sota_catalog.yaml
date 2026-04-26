@@ -98,8 +98,8 @@ tier2_neural:
 
   - id: mlp_plr
     family: neural_tabular
-    arch: {hidden: [256, 256, 256], dropout: 0.1, plr_freq: 48, plr_emb_dim: 64}
-    params: {epochs: 100, patience: 16, lr: 1.0e-3, weight_decay: 0, batch_size: 1024, optimizer: AdamW, scheduler: cosine}
+    arch: {hidden: [512, 512, 512], dropout: 0.1, plr_n_frequencies: 48, plr_d_embedding: 64}
+    params: {epochs: 30, patience: 6, lr: 1.0e-3, weight_decay: 0, batch_size: 8192, optimizer: AdamW, scheduler: cosine}
     precision: bf16
     paper: |
       Gorishniy, Rubachev, Babenko 2022 ICLR 'On Embeddings for Numerical
@@ -109,8 +109,8 @@ tier2_neural:
 
   - id: ft_transformer
     family: neural_tabular
-    arch: {n_blocks: 3, embed_dim: 192, ffn_dim: 256, attn_heads: 8, attn_dropout: 0.2, ffn_dropout: 0.1, residual_dropout: 0.0}
-    params: {epochs: 100, patience: 16, lr: 1.0e-4, weight_decay: 1.0e-5, batch_size: 256, optimizer: AdamW, scheduler: cosine}
+    arch: {n_blocks: 3, d_block: 192, attention_n_heads: 8, attention_dropout: 0.2, ffn_dropout: 0.1, residual_dropout: 0.0}
+    params: {epochs: 30, patience: 6, lr: 1.0e-4, weight_decay: 1.0e-5, batch_size: 2048, optimizer: AdamW, scheduler: cosine}
     precision: bf16
     paper: |
       Gorishniy, Rubachev, Khrulkov, Babenko 2021 NeurIPS 'Revisiting Deep
@@ -150,11 +150,21 @@ tier2_neural:
       Learning' (arXiv:1908.07442) — sequential attention with sparsemax
       feature selection; built-in interpretability via masks.
 
+  - id: resnet_tabular
+    family: neural_tabular
+    arch: {n_blocks: 2, d_block: 256, d_hidden_multiplier: 2.0, dropout1: 0.25, dropout2: 0.0}
+    params: {epochs: 30, patience: 6, lr: 1.0e-3, weight_decay: 0.0, batch_size: 8192, optimizer: AdamW, scheduler: cosine}
+    precision: bf16
+    paper: |
+      Gorishniy, Rubachev, Khrulkov, Babenko 2021 NeurIPS 'Revisiting Deep
+      Learning Models for Tabular Data' (arXiv:2106.11189) — tabular
+      ResNet baseline with skip connections; reports Higgs AUC 0.880.
+
 tier3_sota_2024_2026:
   - id: tabm
     family: neural_tabular_ensemble
-    arch: {hidden: [512, 512, 512], dropout: 0.1, k_ensemble: 32, plr_freq: 48, plr_emb_dim: 64}
-    params: {epochs: 100, patience: 16, lr: 2.0e-3, weight_decay: 1.0e-5, batch_size: 1024, optimizer: AdamW, scheduler: cosine}
+    arch: {hidden: [512, 512, 512], dropout: 0.1, k: 32, use_plr: true, plr_n_frequencies: 48, plr_d_embedding: 64}
+    params: {epochs: 30, patience: 6, lr: 2.0e-3, weight_decay: 1.0e-5, batch_size: 8192, optimizer: AdamW, scheduler: cosine}
     precision: bf16
     paper: |
       Gorishniy, Kotelnikov, Babenko 2024 ICLR 2025 'TabM: Advancing

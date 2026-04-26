@@ -157,7 +157,7 @@ def main() -> int:
             f"All test-AUROC values are computed on the Baldi 2014 frozen "
             f"test split (rows `[10,500,000, 11,000,000)`); val on rows "
             f"`[10,000,000, 10,500,000)`; train on the first "
-            f"{cfg['training'].get('subset_train_n','?'):,} rows of "
+            f"{(cfg['training'].get('subset_train_n') or 10_000_000):,} rows of "
             f"`[0, 10,000,000)`. Every experiment row carries the "
             f"data-split fingerprint and the composite-formula fingerprint "
             f"recorded in `autoresearch_results/data_split_audit.json` and "

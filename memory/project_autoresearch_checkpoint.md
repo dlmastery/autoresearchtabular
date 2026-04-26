@@ -1,6 +1,6 @@
 # AUTORESEARCHTABULAR — autoresearch checkpoint
 
-_Last updated: 2026-04-26T14:40:05.248355Z_
+_Last updated: 2026-04-26T17:57:16.197824Z_
 
 ## Session start instructions
 
@@ -11,28 +11,25 @@ _Last updated: 2026-04-26T14:40:05.248355Z_
 5. Resume the loop with the command below.
 
 ```
-"C:/Users/evija/anaconda3/python.exe" -m core.runner --config configs/higgs.yaml --backbone catboost --description "exp92: <DESCRIBE>"
+"C:/Users/evija/anaconda3/python.exe" -m core.runner --config configs/higgs.yaml --backbone tabm --description "exp95: <DESCRIBE>"
 ```
 
 ## Current champion
-- Backbone: `xgboost`
-- Experiment: #69
-- Composite: **0.8403**
-- test_auc: 0.8403
-- val_auc: 0.8403
-- Description: exp69 [xgboost#19] depth 10 lr 0.01 iters 5000
+- Backbone: `tabm`
+- Experiment: #92
+- Composite: **0.8675**
+- test_auc: 0.8679
+- val_auc: 0.8676
+- Description: exp92 [tabm#1] paper Higgs default k=32 h=512x3 lr=2e-3
 
 ## Last experiment
-- #91 backbone=`catboost` composite=0.8223 status=KEEP
-- Description: exp91 [catboost#16] border_count 254
+- #94 backbone=`tabm` composite=0.8374 status=KEEP
+- Description: exp94 [tabm#3] @ train=1M k=16 ensemble
 
 ## Experiment history
 
 | # | backbone | composite | test_auc | val_auc | train_auc | status |
 |---|---|---|---|---|---|---|
-| 62 | `xgboost` | 0.8292 | 0.8292 | 0.8295 | 0.8461 | KEEP |
-| 63 | `xgboost` | 0.8286 | 0.8286 | 0.8288 | 0.8449 | KEEP |
-| 64 | `xgboost` | 0.8286 | 0.8286 | 0.8288 | 0.8449 | KEEP |
 | 65 | `xgboost` | 0.8286 | 0.8286 | 0.8288 | 0.8449 | KEEP |
 | 66 | `xgboost` | 0.8287 | 0.8287 | 0.8289 | 0.8439 | KEEP |
 | 67 | `xgboost` | 0.8287 | 0.8287 | 0.8290 | 0.8449 | KEEP |
@@ -60,8 +57,11 @@ _Last updated: 2026-04-26T14:40:05.248355Z_
 | 89 | `catboost` | 0.8223 | 0.8223 | 0.8227 | 0.8249 | KEEP |
 | 90 | `catboost` | 0.8223 | 0.8223 | 0.8227 | 0.8249 | KEEP |
 | 91 | `catboost` | 0.8223 | 0.8223 | 0.8227 | 0.8249 | KEEP |
+| 92 | `tabm` | 0.8675 | 0.8679 | 0.8676 | 0.8705 | KEEP/CHAMPION |
+| 93 | `tabm` | 0.8355 | 0.8355 | 0.8356 | 0.8370 | KEEP |
+| 94 | `tabm` | 0.8374 | 0.8374 | 0.8374 | 0.8405 | KEEP |
 
 ## Next experiment command
 ```
-"C:/Users/evija/anaconda3/python.exe" -m core.runner --config configs/higgs.yaml --backbone catboost --description "exp92: <DESCRIBE>"
+"C:/Users/evija/anaconda3/python.exe" -m core.runner --config configs/higgs.yaml --backbone tabm --description "exp95: <DESCRIBE>"
 ```
