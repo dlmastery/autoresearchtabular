@@ -784,3 +784,27 @@
 - **val_auc:** 0.8374
 - **train_auc:** 0.8405
 - **Status:** KEEP
+
+## Exp95: PAPER_DEFAULT_FULL_10M ft_transformer recipe#1: paper Higgs default 3blk d=192 h=8
+- **Backbone:** `ft_transformer`
+- **Composite:** 0.8723
+- **test_auc:** 0.8726
+- **val_auc:** 0.8723
+- **train_auc:** 0.8769
+- **Status:** KEEP/CHAMPION
+
+## Exp96: PAPER_DEFAULT_FULL_10M mlp_plr recipe#1: paper Higgs default plr=48x64 h=512x3
+- **Backbone:** `mlp_plr`
+- **Composite:** 0.8623
+- **test_auc:** 0.8623
+- **val_auc:** 0.8623
+- **train_auc:** 0.8674
+- **Status:** KEEP
+
+## Exp97: PAPER_DEFAULT_FULL_10M resnet_tabular recipe#1: paper Higgs default 2blk d=256 mult=2
+- **Backbone:** `resnet_tabular`
+- **Composite:** 0.8678
+- **test_auc:** 0.8685
+- **val_auc:** 0.8679
+- **train_auc:** 0.8715
+- **Status:** KEEP

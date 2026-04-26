@@ -1,6 +1,6 @@
 # AUTORESEARCHTABULAR — autoresearch checkpoint
 
-_Last updated: 2026-04-26T17:57:16.197824Z_
+_Last updated: 2026-04-26T22:31:31.576360Z_
 
 ## Session start instructions
 
@@ -11,28 +11,25 @@ _Last updated: 2026-04-26T17:57:16.197824Z_
 5. Resume the loop with the command below.
 
 ```
-"C:/Users/evija/anaconda3/python.exe" -m core.runner --config configs/higgs.yaml --backbone tabm --description "exp95: <DESCRIBE>"
+"C:/Users/evija/anaconda3/python.exe" -m core.runner --config configs/higgs.yaml --backbone resnet_tabular --description "exp98: <DESCRIBE>"
 ```
 
 ## Current champion
-- Backbone: `tabm`
-- Experiment: #92
-- Composite: **0.8675**
-- test_auc: 0.8679
-- val_auc: 0.8676
-- Description: exp92 [tabm#1] paper Higgs default k=32 h=512x3 lr=2e-3
+- Backbone: `ft_transformer`
+- Experiment: #95
+- Composite: **0.8723**
+- test_auc: 0.8726
+- val_auc: 0.8723
+- Description: PAPER_DEFAULT_FULL_10M ft_transformer recipe#1: paper Higgs default 3blk d=192 h=8
 
 ## Last experiment
-- #94 backbone=`tabm` composite=0.8374 status=KEEP
-- Description: exp94 [tabm#3] @ train=1M k=16 ensemble
+- #97 backbone=`resnet_tabular` composite=0.8678 status=KEEP
+- Description: PAPER_DEFAULT_FULL_10M resnet_tabular recipe#1: paper Higgs default 2blk d=256 mult=2
 
 ## Experiment history
 
 | # | backbone | composite | test_auc | val_auc | train_auc | status |
 |---|---|---|---|---|---|---|
-| 65 | `xgboost` | 0.8286 | 0.8286 | 0.8288 | 0.8449 | KEEP |
-| 66 | `xgboost` | 0.8287 | 0.8287 | 0.8289 | 0.8439 | KEEP |
-| 67 | `xgboost` | 0.8287 | 0.8287 | 0.8290 | 0.8449 | KEEP |
 | 68 | `xgboost` | 0.8368 | 0.8369 | 0.8370 | 0.8971 | KEEP |
 | 69 | `xgboost` | 0.8403 | 0.8403 | 0.8403 | 0.9531 | KEEP/CHAMPION |
 | 70 | `xgboost` | 0.8302 | 0.8302 | 0.8304 | 0.8491 | KEEP |
@@ -60,8 +57,11 @@ _Last updated: 2026-04-26T17:57:16.197824Z_
 | 92 | `tabm` | 0.8675 | 0.8679 | 0.8676 | 0.8705 | KEEP/CHAMPION |
 | 93 | `tabm` | 0.8355 | 0.8355 | 0.8356 | 0.8370 | KEEP |
 | 94 | `tabm` | 0.8374 | 0.8374 | 0.8374 | 0.8405 | KEEP |
+| 95 | `ft_transformer` | 0.8723 | 0.8726 | 0.8723 | 0.8769 | KEEP/CHAMPION |
+| 96 | `mlp_plr` | 0.8623 | 0.8623 | 0.8623 | 0.8674 | KEEP |
+| 97 | `resnet_tabular` | 0.8678 | 0.8685 | 0.8679 | 0.8715 | KEEP |
 
 ## Next experiment command
 ```
-"C:/Users/evija/anaconda3/python.exe" -m core.runner --config configs/higgs.yaml --backbone tabm --description "exp95: <DESCRIBE>"
+"C:/Users/evija/anaconda3/python.exe" -m core.runner --config configs/higgs.yaml --backbone resnet_tabular --description "exp98: <DESCRIBE>"
 ```

@@ -134,11 +134,11 @@ production trigger systems — so the result has industrial relevance.
 
 ## What the loop produced overnight
 
-_Live snapshot — last updated 2026-04-26T21:29:49Z._
+_Live snapshot — last updated 2026-04-26T22:31:57Z._
 
-- **Total experiments completed:** 94
-- **Backbones with results:** 5 (`catboost, lightgbm, logistic_regression, tabm, xgboost`)
-- **Global champion:** experiment #92 on `tabm` — composite **0.8675** (val_auc 0.8676, test_auc 0.8679, val/test gap 0.0003)
+- **Total experiments completed:** 97
+- **Backbones with results:** 8 (`catboost, ft_transformer, lightgbm, logistic_regression, mlp_plr, resnet_tabular, tabm, xgboost`)
+- **Global champion:** experiment #95 on `ft_transformer` — composite **0.8723** (val_auc 0.8723, test_auc 0.8726, val/test gap 0.0003)
 - **Data-split fingerprint (Baldi 2014, subset_train_n=1M):** `eee12999eeae3950c0c27295…`
 - **Composite formula fingerprint:** SHA-256 of `min(test_auc, val_auc) - 0.1 * abs(test_auc - val_auc)`
 
@@ -147,8 +147,11 @@ _Live snapshot — last updated 2026-04-26T21:29:49Z._
 | backbone | n_exps | best composite | best test_auc | best val_auc | within-backbone gap (max−min composite) |
 |---|---:|---:|---:|---:|---:|
 | `catboost` | 16 | **0.8355** | 0.8355 | 0.8357 | 0.0250 |
+| `ft_transformer` | 1 | **0.8723** | 0.8726 | 0.8723 | 0.0000 |
 | `lightgbm` | 25 | **0.8401** | 0.8401 | 0.8403 | 0.0145 |
 | `logistic_regression` | 25 | **0.6846** | 0.6846 | 0.6849 | 0.0001 |
+| `mlp_plr` | 1 | **0.8623** | 0.8623 | 0.8623 | 0.0000 |
+| `resnet_tabular` | 1 | **0.8678** | 0.8685 | 0.8679 | 0.0000 |
 | `tabm` | 3 | **0.8675** | 0.8679 | 0.8676 | 0.0320 |
 | `xgboost` | 25 | **0.8403** | 0.8403 | 0.8403 | 0.0238 |
 
@@ -156,16 +159,16 @@ _Live snapshot — last updated 2026-04-26T21:29:49Z._
 
 | rank | exp | backbone | composite | val_auc | test_auc | val/test gap | description |
 |---|---:|---|---:|---:|---:|---:|---|
-| 1 | 92 | `tabm` | **0.8675** | 0.8676 | 0.8679 | 0.0003 | exp92 [tabm#1] paper Higgs default k=32 h=512x3 lr=2e-3 |
-| 2 | 69 | `xgboost` | **0.8403** | 0.8403 | 0.8403 | 0.0001 | exp69 [xgboost#19] depth 10 lr 0.01 iters 5000 |
-| 3 | 47 | `lightgbm` | **0.8401** | 0.8403 | 0.8401 | 0.0002 | exp47 [lightgbm#22] leaves 511 lr 0.01 iters 5000 |
-| 4 | 54 | `xgboost` | **0.8374** | 0.8374 | 0.8374 | 0.0000 | exp54 [xgboost#4] depth 10 |
-| 5 | 94 | `tabm` | **0.8374** | 0.8374 | 0.8374 | 0.0000 | exp94 [tabm#3] @ train=1M k=16 ensemble |
-| 6 | 55 | `xgboost` | **0.8373** | 0.8376 | 0.8373 | 0.0003 | exp55 [xgboost#5] depth 12 |
-| 7 | 30 | `lightgbm` | **0.8370** | 0.8373 | 0.8371 | 0.0002 | exp30 [lightgbm#5] leaves 511 |
-| 8 | 68 | `xgboost` | **0.8368** | 0.8370 | 0.8369 | 0.0002 | exp68 [xgboost#18] depth 8 lr 0.02 iters 3000 |
-| 9 | 73 | `xgboost` | **0.8368** | 0.8370 | 0.8369 | 0.0002 | exp73 [xgboost#23] seed 42 best-zone |
-| 10 | 74 | `xgboost` | **0.8368** | 0.8370 | 0.8369 | 0.0002 | exp74 [xgboost#24] seed 7 best-zone |
+| 1 | 95 | `ft_transformer` | **0.8723** | 0.8723 | 0.8726 | 0.0003 | PAPER_DEFAULT_FULL_10M ft_transformer recipe#1: paper Higgs  |
+| 2 | 97 | `resnet_tabular` | **0.8678** | 0.8679 | 0.8685 | 0.0006 | PAPER_DEFAULT_FULL_10M resnet_tabular recipe#1: paper Higgs  |
+| 3 | 92 | `tabm` | **0.8675** | 0.8676 | 0.8679 | 0.0003 | exp92 [tabm#1] paper Higgs default k=32 h=512x3 lr=2e-3 |
+| 4 | 96 | `mlp_plr` | **0.8623** | 0.8623 | 0.8623 | 0.0000 | PAPER_DEFAULT_FULL_10M mlp_plr recipe#1: paper Higgs default |
+| 5 | 69 | `xgboost` | **0.8403** | 0.8403 | 0.8403 | 0.0001 | exp69 [xgboost#19] depth 10 lr 0.01 iters 5000 |
+| 6 | 47 | `lightgbm` | **0.8401** | 0.8403 | 0.8401 | 0.0002 | exp47 [lightgbm#22] leaves 511 lr 0.01 iters 5000 |
+| 7 | 54 | `xgboost` | **0.8374** | 0.8374 | 0.8374 | 0.0000 | exp54 [xgboost#4] depth 10 |
+| 8 | 94 | `tabm` | **0.8374** | 0.8374 | 0.8374 | 0.0000 | exp94 [tabm#3] @ train=1M k=16 ensemble |
+| 9 | 55 | `xgboost` | **0.8373** | 0.8376 | 0.8373 | 0.0003 | exp55 [xgboost#5] depth 12 |
+| 10 | 30 | `lightgbm` | **0.8370** | 0.8373 | 0.8371 | 0.0002 | exp30 [lightgbm#5] leaves 511 |
 
 ## What I'd change
 
