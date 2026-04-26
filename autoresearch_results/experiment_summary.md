@@ -352,3 +352,227 @@
 - **val_auc:** 0.8303
 - **train_auc:** 0.8502
 - **Status:** KEEP
+
+## Exp41: exp41 [lightgbm#16] reg_lambda 5.0
+- **Backbone:** `lightgbm`
+- **Composite:** 0.8306
+- **test_auc:** 0.8306
+- **val_auc:** 0.8309
+- **train_auc:** 0.8497
+- **Status:** KEEP
+
+## Exp42: exp42 [lightgbm#17] max_depth 8 cap
+- **Backbone:** `lightgbm`
+- **Composite:** 0.8298
+- **test_auc:** 0.8298
+- **val_auc:** 0.8301
+- **train_auc:** 0.8488
+- **Status:** KEEP
+
+## Exp43: exp43 [lightgbm#18] max_depth 12 cap
+- **Backbone:** `lightgbm`
+- **Composite:** 0.8299
+- **test_auc:** 0.8299
+- **val_auc:** 0.8304
+- **train_auc:** 0.8501
+- **Status:** KEEP
+
+## Exp44: exp44 [lightgbm#19] leaves 127 lr 0.02 iters 3000
+- **Backbone:** `lightgbm`
+- **Composite:** 0.8352
+- **test_auc:** 0.8352
+- **val_auc:** 0.8355
+- **train_auc:** 0.8817
+- **Status:** KEEP
+
+## Exp45: exp45 [lightgbm#20] leaves 255 min_data 200
+- **Backbone:** `lightgbm`
+- **Composite:** 0.8358
+- **test_auc:** 0.8358
+- **val_auc:** 0.8360
+- **train_auc:** 0.9070
+- **Status:** KEEP
+
+## Exp46: exp46 [lightgbm#21] leaves 127 reg_lambda 5 fraction 0.7
+- **Backbone:** `lightgbm`
+- **Composite:** 0.8341
+- **test_auc:** 0.8341
+- **val_auc:** 0.8343
+- **train_auc:** 0.8702
+- **Status:** KEEP
+
+## Exp47: exp47 [lightgbm#22] leaves 511 lr 0.01 iters 5000
+- **Backbone:** `lightgbm`
+- **Composite:** 0.8401
+- **test_auc:** 0.8401
+- **val_auc:** 0.8403
+- **train_auc:** 0.9557
+- **Status:** KEEP/CHAMPION
+
+## Exp48: exp48 [lightgbm#23] seed 42 best-zone
+- **Backbone:** `lightgbm`
+- **Composite:** 0.8352
+- **test_auc:** 0.8352
+- **val_auc:** 0.8355
+- **train_auc:** 0.8817
+- **Status:** KEEP
+
+## Exp49: exp49 [lightgbm#24] seed 7 best-zone
+- **Backbone:** `lightgbm`
+- **Composite:** 0.8352
+- **test_auc:** 0.8352
+- **val_auc:** 0.8355
+- **train_auc:** 0.8817
+- **Status:** KEEP
+
+## Exp50: exp50 [lightgbm#25] seed 123 best-zone
+- **Backbone:** `lightgbm`
+- **Composite:** 0.8352
+- **test_auc:** 0.8352
+- **val_auc:** 0.8355
+- **train_auc:** 0.8817
+- **Status:** KEEP
+
+## Exp51: exp51 [xgboost#1] default depth 6 lr 0.05
+- **Backbone:** `xgboost`
+- **Composite:** 0.8286
+- **test_auc:** 0.8286
+- **val_auc:** 0.8288
+- **train_auc:** 0.8449
+- **Status:** KEEP
+
+## Exp52: exp52 [xgboost#2] depth 4
+- **Backbone:** `xgboost`
+- **Composite:** 0.8164
+- **test_auc:** 0.8165
+- **val_auc:** 0.8169
+- **train_auc:** 0.8201
+- **Status:** KEEP
+
+## Exp53: exp53 [xgboost#3] depth 8
+- **Backbone:** `xgboost`
+- **Composite:** 0.8350
+- **test_auc:** 0.8350
+- **val_auc:** 0.8353
+- **train_auc:** 0.8868
+- **Status:** KEEP
+
+## Exp54: exp54 [xgboost#4] depth 10
+- **Backbone:** `xgboost`
+- **Composite:** 0.8374
+- **test_auc:** 0.8374
+- **val_auc:** 0.8374
+- **train_auc:** 0.9507
+- **Status:** KEEP
+
+## Exp55: exp55 [xgboost#5] depth 12
+- **Backbone:** `xgboost`
+- **Composite:** 0.8373
+- **test_auc:** 0.8373
+- **val_auc:** 0.8376
+- **train_auc:** 0.9928
+- **Status:** KEEP
+
+## Exp56: exp56 [xgboost#6] lr 0.01 + 5000 iters
+- **Backbone:** `xgboost`
+- **Composite:** 0.8293
+- **test_auc:** 0.8294
+- **val_auc:** 0.8296
+- **train_auc:** 0.8456
+- **Status:** KEEP
+
+## Exp57: exp57 [xgboost#7] lr 0.1
+- **Backbone:** `xgboost`
+- **Composite:** 0.8320
+- **test_auc:** 0.8320
+- **val_auc:** 0.8321
+- **train_auc:** 0.8630
+- **Status:** KEEP
+
+## Exp58: exp58 [xgboost#8] lr 0.02 + 3000 iters
+- **Backbone:** `xgboost`
+- **Composite:** 0.8306
+- **test_auc:** 0.8306
+- **val_auc:** 0.8308
+- **train_auc:** 0.8499
+- **Status:** KEEP
+
+## Exp59: exp59 [xgboost#9] subsample 0.5
+- **Backbone:** `xgboost`
+- **Composite:** 0.8283
+- **test_auc:** 0.8283
+- **val_auc:** 0.8285
+- **train_auc:** 0.8444
+- **Status:** KEEP
+
+## Exp60: exp60 [xgboost#10] subsample 1.0
+- **Backbone:** `xgboost`
+- **Composite:** 0.8280
+- **test_auc:** 0.8280
+- **val_auc:** 0.8283
+- **train_auc:** 0.8442
+- **Status:** KEEP
+
+## Exp61: exp61 [xgboost#11] colsample 0.5
+- **Backbone:** `xgboost`
+- **Composite:** 0.8266
+- **test_auc:** 0.8266
+- **val_auc:** 0.8270
+- **train_auc:** 0.8419
+- **Status:** KEEP
+
+## Exp62: exp62 [xgboost#12] colsample 1.0
+- **Backbone:** `xgboost`
+- **Composite:** 0.8292
+- **test_auc:** 0.8292
+- **val_auc:** 0.8295
+- **train_auc:** 0.8461
+- **Status:** KEEP
+
+## Exp63: exp63 [xgboost#13] min_child_weight 5
+- **Backbone:** `xgboost`
+- **Composite:** 0.8286
+- **test_auc:** 0.8286
+- **val_auc:** 0.8288
+- **train_auc:** 0.8449
+- **Status:** KEEP
+
+## Exp64: exp64 [xgboost#14] min_child_weight 20
+- **Backbone:** `xgboost`
+- **Composite:** 0.8286
+- **test_auc:** 0.8286
+- **val_auc:** 0.8288
+- **train_auc:** 0.8449
+- **Status:** KEEP
+
+## Exp65: exp65 [xgboost#15] gamma 0.5
+- **Backbone:** `xgboost`
+- **Composite:** 0.8286
+- **test_auc:** 0.8286
+- **val_auc:** 0.8288
+- **train_auc:** 0.8449
+- **Status:** KEEP
+
+## Exp66: exp66 [xgboost#16] reg_lambda 5
+- **Backbone:** `xgboost`
+- **Composite:** 0.8287
+- **test_auc:** 0.8287
+- **val_auc:** 0.8289
+- **train_auc:** 0.8439
+- **Status:** KEEP
+
+## Exp67: exp67 [xgboost#17] reg_alpha 0.1
+- **Backbone:** `xgboost`
+- **Composite:** 0.8287
+- **test_auc:** 0.8287
+- **val_auc:** 0.8290
+- **train_auc:** 0.8449
+- **Status:** KEEP
+
+## Exp68: exp68 [xgboost#18] depth 8 lr 0.02 iters 3000
+- **Backbone:** `xgboost`
+- **Composite:** 0.8368
+- **test_auc:** 0.8369
+- **val_auc:** 0.8370
+- **train_auc:** 0.8971
+- **Status:** KEEP

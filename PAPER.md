@@ -223,11 +223,11 @@ Per-experiment artefacts: `recipe.yaml`, `metrics.json`,
 
 ## 4. Results
 
-_Live snapshot — last updated 2026-04-26T08:04:18Z._
+_Live snapshot — last updated 2026-04-26T11:48:21Z._
 
-- **Total experiments completed:** 40
-- **Backbones with results:** 2 (`lightgbm, logistic_regression`)
-- **Global champion:** experiment #30 on `lightgbm` — composite **0.8370** (val_auc 0.8373, test_auc 0.8371, val/test gap 0.0002)
+- **Total experiments completed:** 68
+- **Backbones with results:** 3 (`lightgbm, logistic_regression, xgboost`)
+- **Global champion:** experiment #47 on `lightgbm` — composite **0.8401** (val_auc 0.8403, test_auc 0.8401, val/test gap 0.0002)
 - **Data-split fingerprint (Baldi 2014, subset_train_n=1M):** `3c5edcc34086b3dba8406b7e…`
 - **Composite formula fingerprint:** SHA-256 of `min(test_auc, val_auc) - 0.1 * abs(test_auc - val_auc)`
 
@@ -235,23 +235,24 @@ _Live snapshot — last updated 2026-04-26T08:04:18Z._
 
 | backbone | n_exps | best composite | best test_auc | best val_auc | within-backbone gap (max−min composite) |
 |---|---:|---:|---:|---:|---:|
-| `lightgbm` | 15 | **0.8370** | 0.8371 | 0.8373 | 0.0115 |
+| `lightgbm` | 25 | **0.8401** | 0.8401 | 0.8403 | 0.0145 |
 | `logistic_regression` | 25 | **0.6846** | 0.6846 | 0.6849 | 0.0001 |
+| `xgboost` | 18 | **0.8374** | 0.8374 | 0.8374 | 0.0210 |
 
 ### 4.2 Global top 10 by composite
 
 | rank | exp | backbone | composite | val_auc | test_auc | val/test gap | description |
 |---|---:|---|---:|---:|---:|---:|---|
-| 1 | 30 | `lightgbm` | **0.8370** | 0.8373 | 0.8371 | 0.0002 | exp30 [lightgbm#5] leaves 511 |
-| 2 | 31 | `lightgbm` | **0.8359** | 0.8361 | 0.8359 | 0.0002 | exp31 [lightgbm#6] lr 0.01 + 5x iters |
-| 3 | 29 | `lightgbm` | **0.8358** | 0.8360 | 0.8358 | 0.0002 | exp29 [lightgbm#4] leaves 255 |
-| 4 | 33 | `lightgbm` | **0.8353** | 0.8355 | 0.8353 | 0.0002 | exp33 [lightgbm#8] lr 0.02 + 3000 iters |
-| 5 | 28 | `lightgbm` | **0.8336** | 0.8341 | 0.8337 | 0.0004 | exp28 [lightgbm#3] leaves 127 |
-| 6 | 37 | `lightgbm` | **0.8306** | 0.8309 | 0.8306 | 0.0003 | exp37 [lightgbm#12] feature_fraction 1.0 |
-| 7 | 38 | `lightgbm` | **0.8301** | 0.8304 | 0.8302 | 0.0003 | exp38 [lightgbm#13] bagging_fraction 0.5 |
-| 8 | 1 | `lightgbm` | **0.8301** | 0.8305 | 0.8302 | 0.0004 | exp1 [lightgbm#1] default 1000 leaves 63 lr 0.05 |
-| 9 | 32 | `lightgbm` | **0.8301** | 0.8305 | 0.8302 | 0.0004 | exp32 [lightgbm#7] lr 0.1 fast |
-| 10 | 34 | `lightgbm` | **0.8301** | 0.8305 | 0.8302 | 0.0004 | exp34 [lightgbm#9] min_data_in_leaf 100 |
+| 1 | 47 | `lightgbm` | **0.8401** | 0.8403 | 0.8401 | 0.0002 | exp47 [lightgbm#22] leaves 511 lr 0.01 iters 5000 |
+| 2 | 54 | `xgboost` | **0.8374** | 0.8374 | 0.8374 | 0.0000 | exp54 [xgboost#4] depth 10 |
+| 3 | 55 | `xgboost` | **0.8373** | 0.8376 | 0.8373 | 0.0003 | exp55 [xgboost#5] depth 12 |
+| 4 | 30 | `lightgbm` | **0.8370** | 0.8373 | 0.8371 | 0.0002 | exp30 [lightgbm#5] leaves 511 |
+| 5 | 68 | `xgboost` | **0.8368** | 0.8370 | 0.8369 | 0.0002 | exp68 [xgboost#18] depth 8 lr 0.02 iters 3000 |
+| 6 | 31 | `lightgbm` | **0.8359** | 0.8361 | 0.8359 | 0.0002 | exp31 [lightgbm#6] lr 0.01 + 5x iters |
+| 7 | 29 | `lightgbm` | **0.8358** | 0.8360 | 0.8358 | 0.0002 | exp29 [lightgbm#4] leaves 255 |
+| 8 | 45 | `lightgbm` | **0.8358** | 0.8360 | 0.8358 | 0.0002 | exp45 [lightgbm#20] leaves 255 min_data 200 |
+| 9 | 33 | `lightgbm` | **0.8353** | 0.8355 | 0.8353 | 0.0002 | exp33 [lightgbm#8] lr 0.02 + 3000 iters |
+| 10 | 44 | `lightgbm` | **0.8352** | 0.8355 | 0.8352 | 0.0003 | exp44 [lightgbm#19] leaves 127 lr 0.02 iters 3000 |
 
 ### 4.3 Notes
 
