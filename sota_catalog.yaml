@@ -1,0 +1,198 @@
+# sota_catalog.yaml — Tabular ML SOTA recipes for AUTORESEARCHTABULAR / Higgs UCI
+# Each entry includes the paper citation per Citation Rigor format.
+
+tier1_baselines:
+  - id: logistic_regression
+    family: linear
+    sklearn_class: LogisticRegression
+    params: {C: 1.0, max_iter: 1000, solver: lbfgs, n_jobs: 4}
+    paper: |
+      Pedregosa, Varoquaux, Gramfort, Michel, Thirion, Grisel, Blondel,
+      Prettenhofer, Weiss, Dubourg, Vanderplas, Passos, Cournapeau, Brucher,
+      Perrot, Duchesnay 2011 JMLR 'Scikit-learn: Machine Learning in Python'
+      (arXiv:1201.0490) — sklearn LBFGS implementation; C=1.0 default L2.
+
+  - id: random_forest
+    family: tree_ensemble
+    sklearn_class: RandomForestClassifier
+    params: {n_estimators: 500, max_depth: 20, max_features: sqrt, n_jobs: 4, random_state: 0}
+    paper: |
+      Breiman 2001 Machine Learning Vol 45 'Random Forests' — bootstrap
+      aggregation of decision trees; canonical tabular baseline.
+
+  - id: lightgbm
+    family: gbm
+    params:
+      n_estimators: 1000
+      num_leaves: 63
+      learning_rate: 0.05
+      feature_fraction: 0.8
+      bagging_fraction: 0.8
+      bagging_freq: 5
+      min_data_in_leaf: 20
+      reg_alpha: 0.0
+      reg_lambda: 1.0
+      n_jobs: 4
+      objective: binary
+      metric: auc
+      verbose: -1
+      early_stopping_rounds: 50
+    paper: |
+      Ke, Meng, Finley, Wang, Chen, Ma, Ye, Liu 2017 NeurIPS 'LightGBM: A
+      Highly Efficient Gradient Boosting Decision Tree' — leaf-wise growth
+      + GOSS sampling + EFB; fastest GBM on large datasets.
+
+  - id: xgboost
+    family: gbm
+    params:
+      n_estimators: 1000
+      max_depth: 6
+      learning_rate: 0.05
+      subsample: 0.8
+      colsample_bytree: 0.8
+      min_child_weight: 1
+      reg_alpha: 0.0
+      reg_lambda: 1.0
+      gamma: 0.0
+      n_jobs: 4
+      objective: binary:logistic
+      eval_metric: auc
+      tree_method: hist
+      early_stopping_rounds: 50
+    paper: |
+      Chen & Guestrin 2016 KDD 'XGBoost: A Scalable Tree Boosting System'
+      (arXiv:1603.02754) — 2nd-order Newton boosting; level-wise trees
+      with histogram method.
+
+  - id: catboost
+    family: gbm
+    params:
+      iterations: 1000
+      depth: 6
+      learning_rate: 0.05
+      l2_leaf_reg: 3.0
+      bagging_temperature: 1.0
+      random_strength: 1.0
+      thread_count: 4
+      loss_function: Logloss
+      eval_metric: AUC
+      verbose: 0
+      early_stopping_rounds: 100
+    paper: |
+      Prokhorenkova, Gusev, Vorobev, Dorogush, Gulin 2018 NeurIPS
+      'CatBoost: Unbiased Boosting with Categorical Features'
+      (arXiv:1706.09516) — symmetric oblivious trees + ordered boosting;
+      strong out-of-box accuracy.
+
+tier2_neural:
+  - id: mlp
+    family: neural_tabular
+    arch: {hidden: [256, 256, 256], dropout: 0.1}
+    params: {epochs: 100, patience: 16, lr: 1.0e-3, weight_decay: 0, batch_size: 1024, optimizer: AdamW, scheduler: cosine}
+    precision: bf16
+    paper: |
+      Gorishniy, Rubachev, Khrulkov, Babenko 2021 NeurIPS 'Revisiting Deep
+      Learning Models for Tabular Data' (arXiv:2106.11189) — establishes
+      strong MLP baseline with tuned regularization; canonical tabular
+      neural baseline.
+
+  - id: mlp_plr
+    family: neural_tabular
+    arch: {hidden: [256, 256, 256], dropout: 0.1, plr_freq: 48, plr_emb_dim: 64}
+    params: {epochs: 100, patience: 16, lr: 1.0e-3, weight_decay: 0, batch_size: 1024, optimizer: AdamW, scheduler: cosine}
+    precision: bf16
+    paper: |
+      Gorishniy, Rubachev, Babenko 2022 ICLR 'On Embeddings for Numerical
+      Features in Tabular Deep Learning' (arXiv:2203.05556) — periodic-
+      linear-relu embedding for numerical features; +0.5-1.5 percent
+      improvement over plain MLP on most benchmarks.
+
+  - id: ft_transformer
+    family: neural_tabular
+    arch: {n_blocks: 3, embed_dim: 192, ffn_dim: 256, attn_heads: 8, attn_dropout: 0.2, ffn_dropout: 0.1, residual_dropout: 0.0}
+    params: {epochs: 100, patience: 16, lr: 1.0e-4, weight_decay: 1.0e-5, batch_size: 256, optimizer: AdamW, scheduler: cosine}
+    precision: bf16
+    paper: |
+      Gorishniy, Rubachev, Khrulkov, Babenko 2021 NeurIPS 'Revisiting Deep
+      Learning Models for Tabular Data' (arXiv:2106.11189) — Feature
+      Tokenizer + Transformer; SOTA neural tabular at 2021 across many
+      benchmarks; reports Higgs AUC 0.880.
+
+  - id: saint
+    family: neural_tabular
+    arch: {n_layers: 6, embed_dim: 32, attn_heads: 8, attn_dropout: 0.1}
+    params: {epochs: 100, patience: 16, lr: 1.0e-4, weight_decay: 1.0e-5, batch_size: 256, optimizer: AdamW, scheduler: cosine}
+    precision: bf16
+    paper: |
+      Somepalli, Goldblum, Schwarzschild, Bruss, Goldstein 2021 'SAINT:
+      Improved Neural Networks for Tabular Data via Row Attention and
+      Contrastive Pre-Training' (arXiv:2106.01342) — combines row
+      attention and feature attention; reports Higgs AUC 0.881.
+
+  - id: node
+    family: neural_tabular
+    arch: {n_layers: 2, depth: 6, n_trees: 2048, tree_dim: 3}
+    params: {epochs: 100, patience: 16, lr: 1.0e-3, weight_decay: 0, batch_size: 1024, optimizer: AdamW, scheduler: cosine}
+    precision: bf16
+    paper: |
+      Popov, Morozov, Babenko 2020 ICLR 'Neural Oblivious Decision
+      Ensembles for Deep Learning on Tabular Data' (arXiv:1909.06312) —
+      differentiable oblivious decision trees with entmax; neural
+      analogue of CatBoost-style oblivious trees.
+
+  - id: tabnet
+    family: neural_tabular
+    arch: {n_d: 64, n_a: 64, n_steps: 5, gamma: 1.5, n_independent: 2, n_shared: 2}
+    params: {epochs: 100, patience: 16, lr: 2.0e-2, weight_decay: 1.0e-5, batch_size: 1024, optimizer: AdamW, scheduler: plateau}
+    precision: fp32
+    paper: |
+      Arik & Pfister 2021 AAAI 'TabNet: Attentive Interpretable Tabular
+      Learning' (arXiv:1908.07442) — sequential attention with sparsemax
+      feature selection; built-in interpretability via masks.
+
+tier3_sota_2024_2026:
+  - id: tabm
+    family: neural_tabular_ensemble
+    arch: {hidden: [512, 512, 512], dropout: 0.1, k_ensemble: 32, plr_freq: 48, plr_emb_dim: 64}
+    params: {epochs: 100, patience: 16, lr: 2.0e-3, weight_decay: 1.0e-5, batch_size: 1024, optimizer: AdamW, scheduler: cosine}
+    precision: bf16
+    paper: |
+      Gorishniy, Kotelnikov, Babenko 2024 ICLR 2025 'TabM: Advancing
+      Tabular Deep Learning with Parameter-Efficient Ensembling'
+      (arXiv:2410.24210) — BatchEnsemble of MLPs with shared backbone +
+      PLR embedding; ~2024-2025 SOTA on most tabular benchmarks
+      including Higgs at AUC ~0.886.
+
+  - id: tabpfn_v2
+    family: foundation_model
+    arch: {pretrained: true, in_context: true}
+    params: {epochs: 0, batch_size: 1024}
+    precision: bf16
+    paper: |
+      Hollmann, Müller, Eggensperger, Hutter 2025 Nature 'Accurate
+      predictions on small data with a tabular foundation model'
+      (TabPFN-v2 release) — pretrained Prior-Fitted Network; designed
+      for ≤ 10 k samples; on Higgs we use it as a rapid in-context
+      probe on a 10 k subsample.
+
+  - id: trompt
+    family: neural_tabular
+    arch: {n_prompts: 8, embed_dim: 192, n_blocks: 6, attn_dropout: 0.2}
+    params: {epochs: 100, patience: 16, lr: 1.0e-3, weight_decay: 0, batch_size: 256, optimizer: AdamW, scheduler: cosine}
+    precision: bf16
+    paper: |
+      Chen, Yan, Hsia, Chiu, Liao, Liu, Hu 2023 ICML 'Trompt: Towards
+      a Better Deep Neural Network for Tabular Data' (arXiv:2305.18446)
+      — prompt-token-based tabular transformer with per-feature
+      adapters.
+
+  - id: excelformer
+    family: neural_tabular
+    arch: {embed_dim: 192, n_blocks: 6, attn_heads: 8, semi_permeable: true, mixup_p: 0.5, cutmix_p: 0.5}
+    params: {epochs: 100, patience: 16, lr: 1.0e-4, weight_decay: 1.0e-5, batch_size: 256, optimizer: AdamW, scheduler: cosine}
+    precision: bf16
+    paper: |
+      Chen, Yan, Hsia, Chiu, Liao, Liu, Hu 2023 'ExcelFormer: A Neural
+      Network Surpassing GBDTs on Tabular Data' (arXiv:2301.02819) —
+      semi-permeable attention + row-level mix-up + cut-mix; first
+      neural tabular method claimed to beat GBDTs across the board.

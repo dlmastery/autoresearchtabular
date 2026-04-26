@@ -1,0 +1,37 @@
+# Data cache (large; gitignored)
+.data_cache/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.pytest_cache/
+
+# Build / venv
+build/
+dist/
+.venv/
+env/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Heavy model artifacts
+autoresearch_results/best_model.pt
+autoresearch_results/best_model.joblib
+autoresearch_results/winners/*/model_checkpoint.pt
+autoresearch_results/winners/*/model_checkpoint.joblib
+
+# CatBoost noise
+catboost_info/
+
+# Local-only
+*.log
+*.tmp
+.commit_msg.txt

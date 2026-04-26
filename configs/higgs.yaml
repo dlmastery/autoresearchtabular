@@ -1,0 +1,72 @@
+# Default project config for AUTORESEARCHTABULAR / Higgs UCI
+
+paths:
+  results_dir: C:/Users/evija/AUTORESEARCHTABULAR/autoresearch_results
+  memory_dir:  C:/Users/evija/AUTORESEARCHTABULAR/memory
+  data_cache:  C:/Users/evija/AUTORESEARCHTABULAR/.data_cache
+  code_versions_dir: C:/Users/evija/AUTORESEARCHTABULAR/code_versions
+
+task_type: binary_classification
+primary_metric: auroc
+data_mode: higgs
+
+split:
+  name: baldi_2014_frozen
+  train_n: 10000000
+  val_n: 500000
+  test_n: 500000
+  total_expected: 11000000
+
+backbone: lightgbm
+backbone_config:
+  pretrained: false
+
+training:
+  batch_size: null      # null = use catalog default
+  epochs: null
+  patience: null
+  lr: null
+  warmup_epochs: null
+  weight_decay: null
+  optimizer: AdamW
+  scheduler: cosine
+  loss: bce
+  grad_clip: 1.0
+  precision: bf16       # neural backbones
+  num_workers: 0        # Windows-safe
+  pin_memory: true
+  amp_enable: true
+  num_threads: 4        # GBM threads
+  standardize_features: true   # for neural backbones
+  subset_train_n: null  # if set, train on subset (for fast iteration); val/test always full
+
+augmentation:
+  train:
+    mixup_alpha: 0.0    # off; can be enabled per-experiment
+    cutmix_alpha: 0.0
+    feature_dropout: 0.0
+  val_test:
+    deterministic: true
+
+composite:
+  formula: "min(test_auc, val_auc) - 0.1 * abs(test_auc - val_auc)"
+  fingerprint_required: true
+
+uncertainty:
+  enable_mc_dropout: false
+  enable_aleatoric_head: false
+
+hardware:
+  gpu_vram_gb: 16
+  cpu_runner_affinity: [0, 2, 4, 6]
+  banned_cores: [16, 17, 24, 25]
+  experiment_timeout_s: 1800
+  cooldown_s: 60
+
+reasoning_gate:
+  citation_rigor: true
+  reasoning_blob_completeness: true
+  bypass_allowed: false
+
+description: "baseline experiment"
+seed: 0
