@@ -1,6 +1,6 @@
 # AUTORESEARCHTABULAR — autoresearch checkpoint
 
-_Last updated: 2026-04-26T06:46:45.118571Z_
+_Last updated: 2026-04-26T06:51:28.356679Z_
 
 ## Session start instructions
 
@@ -11,7 +11,7 @@ _Last updated: 2026-04-26T06:46:45.118571Z_
 5. Resume the loop with the command below.
 
 ```
-"C:/Users/evija/anaconda3/python.exe" -m core.runner --config configs/higgs.yaml --backbone lightgbm --description "exp2: <DESCRIBE>"
+"C:/Users/evija/anaconda3/python.exe" -m core.runner --config configs/higgs.yaml --backbone logistic_regression --description "exp7: <DESCRIBE>"
 ```
 
 ## Current champion
@@ -23,16 +23,21 @@ _Last updated: 2026-04-26T06:46:45.118571Z_
 - Description: exp1 [lightgbm#1] default 1000 leaves 63 lr 0.05
 
 ## Last experiment
-- #1 backbone=`lightgbm` composite=0.8301 status=KEEP/CHAMPION
-- Description: exp1 [lightgbm#1] default 1000 leaves 63 lr 0.05
+- #6 backbone=`logistic_regression` composite=0.6846 status=KEEP
+- Description: exp6 [logistic_regression#5] C=100 near-unregularised
 
 ## Experiment history
 
 | # | backbone | composite | test_auc | val_auc | train_auc | status |
 |---|---|---|---|---|---|---|
 | 1 | `lightgbm` | 0.8301 | 0.8302 | 0.8305 | 0.8504 | KEEP/CHAMPION |
+| 2 | `logistic_regression` | 0.6846 | 0.6846 | 0.6849 | 0.6838 | KEEP |
+| 3 | `logistic_regression` | 0.6846 | 0.6846 | 0.6849 | 0.6838 | KEEP |
+| 4 | `logistic_regression` | 0.6846 | 0.6846 | 0.6849 | 0.6838 | KEEP |
+| 5 | `logistic_regression` | 0.6846 | 0.6846 | 0.6849 | 0.6838 | KEEP |
+| 6 | `logistic_regression` | 0.6846 | 0.6846 | 0.6849 | 0.6838 | KEEP |
 
 ## Next experiment command
 ```
-"C:/Users/evija/anaconda3/python.exe" -m core.runner --config configs/higgs.yaml --backbone lightgbm --description "exp2: <DESCRIBE>"
+"C:/Users/evija/anaconda3/python.exe" -m core.runner --config configs/higgs.yaml --backbone logistic_regression --description "exp7: <DESCRIBE>"
 ```
